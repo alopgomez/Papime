@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>VectorRain - FES Acatlán Edition</title>
+    <style>
+        body { margin: 0; background: #1a1a2e; color: white; font-family: sans-serif; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+        canvas { background: #16213e; border: 2px solid #4ecca3; margin-top: 10px; cursor: crosshair; }
+        .stats { padding: 10px; font-size: 1.2rem; }
+        .instructions { font-size: 0.9rem; color: #4ecca3; }
+    </style>
+</head>
+<body>
+
+    <div class="stats">
+        Target: <span id="target-val" style="color: #e94560;">(0,0)</span> | 
+        Suma Actual: <span id="current-val" style="color: #4ecca3;">(0,0)</span>
+    </div>
+    <div class="instructions">Haz clic en las gotas para sumar vectores. ¡Llega al círculo rojo!</div>
+    
+    <canvas id="gameCanvas"></canvas>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const targetDisplay = document.getElementById('target-val');
+    const currentDisplay = document.getElementById('current-val');
+
+    canvas.width = 600;
+    canvas.height = 600;
+
+    // Estado del juego
+    let currentSum = { x: 0, y: 0 };
+    let target = { x: 5, y: -4 }; // Vector objetivo
+    let drops = [];
+    let scale = 30; // 30px por unidad vectorial
+    const origin = { x: canvas.width / 2, y: canvas.height / 2 };
+
+    function createDrop() {
+        const vx = Math.floor(Math.random() * 11) - 5; // -5 a 5
+        const vy = Math.floor(Math.random() * 11) - 5;
+        drops.push({
+            x: Math.random() * (canvas.width - 50) + 25,
+            y: -20,
+            vx: vx,
+            vy: vy,
+            speed: 1 + Math.random() * 2
+        });
+    }
+
+    function drawGrid() {
+        ctx.strokeStyle = '#24344d';
+        ctx.lineWidth = 1;
+        for(let i = 0; i < canvas.width; i += scale) {
+            ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
+        }
+        // Ejes
+        ctx.strokeStyle = '#533483';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(origin.x, 0); ctx.lineTo(origin.x, canvas.height); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, origin.y); ctx.lineTo(canvas.width, origin.y); ctx.stroke();
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawGrid();
+
+        // Dibujar Target (Círculo rojo)
+        ctx.fillStyle = 'rgba(233, 69, 96, 0.4)';
+        ctx.beginPath();
+        ctx.arc(origin.x + target.x * scale, origin.y - target.y * scale, scale/2, 0, Math.PI*2);
+        ctx.fill();
+
+        // Dibujar Vector Acumulado (Línea azul)
+        ctx.strokeStyle = '#4ecca3';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(origin.x, origin.y);
+        ctx.lineTo(origin.x + currentSum.x * scale, origin.y - currentSum.y * scale);
+        ctx.stroke();
+
+        // Dibujar Gotas
+        drops.forEach((drop, index) => {
+            drop.y += drop.speed;
+            ctx.fillStyle = '#0f3460';
+            ctx.beginPath();
+            ctx.arc(drop.x, drop.y, 25, 0, Math.PI*2);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.fillText(`(${drop.vx}, ${drop.vy})`, drop.x, drop.y + 5);
+
+            if (drop.y > canvas.height) drops.splice(index, 1);
+        });
+
+        // Actualizar UI
+        targetDisplay.innerText = `(${target.x}, ${target.y})`;
+        currentDisplay.innerText = `(${currentSum.x}, ${currentSum.y})`;
+
+        // Check Victoria
+        if (currentSum.x === target.x && currentSum.y === target.y) {
+            alert("¡Excelente! Has alcanzado el vector objetivo.");
+            currentSum = {x:0, y:0};
+            target = { x: Math.floor(Math.random()*10)-5, y: Math.floor(Math.random()*10)-5 };
+        }
+
+        requestAnimationFrame(draw);
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        drops.forEach((drop, index) => {
+            const dist = Math.hypot(drop.x - mouseX, drop.y - mouseY);
+            if (dist < 25) {
+                currentSum.x += drop.vx;
+                currentSum.y += drop.vy;
+                drops.splice(index, 1);
+            }
+        });
+    });
+
+    setInterval(createDrop, 2000);
+    draw();
+</script>
+</body>
+</html>
