@@ -1,0 +1,61 @@
+:root {
+    --primary: #3498db; --success: #2ecc71; --danger: #e74c3c;
+    
+    --warning: #f1c40f; --dark: #2c3e50; --gold: #d4af37;
+}
+
+.contenedor-juego {
+    display: flex;
+    background: white; padding: 30px; border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    text-align: center; 
+    width: 500px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    /* max-height: 400px; */
+}
+
+.pantalla { display: none; }
+.activa { display: block; }
+
+.objetivo-card {
+    background: var(--danger); color: white; font-size: 3.5rem;
+    width: 140px; height: 140px; line-height: 140px;
+    border-radius: 20px; margin: 20px auto; font-weight: bold;
+    border: 6px solid #c0392b; transform: rotate(-2deg);
+}
+
+.grid-numeros { display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; }
+
+.numero-card {
+    background: var(--dark); color: white; padding: 15px 20px;
+    border-radius: 10px; font-weight: bold; font-size: 1.5rem;
+    box-shadow: 0 4px 0 #1a252f;
+}
+
+input[type="text"] {
+    width: 90%; padding: 15px; font-size: 1.2rem;
+    border: 2px solid #ced4da; border-radius: 10px;
+    margin-bottom: 10px; text-align: center; outline: none;
+}
+
+.guia-sintaxis {
+    background: #fff3cd; color: #856404; padding: 10px;
+    border-radius: 8px; font-size: 0.85rem; margin-bottom: 15px;
+    border: 1px solid #ffeeba;
+}
+
+.controles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+button {
+    padding: 12px; border: none; border-radius: 8px;
+    font-weight: bold; cursor: pointer; transition: 0.2s;
+}
+
+.btn-validar { background: var(--success); color: white; grid-column: span 2; }
+.btn-siguiente { background: var(--primary); color: white; display: none; grid-column: span 2; }
+.btn-omitir { background: var(--warning); color: #333; }
+.btn-menu { background: #6c757d; color: white; }
+
+.mensaje { margin: 15px 0; font-weight: bold; min-height: 40px; }

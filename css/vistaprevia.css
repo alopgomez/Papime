@@ -1,0 +1,41 @@
+.games-intro {
+  max-width: 600px;
+  margin: 10px auto 30px auto;
+  color: #555;
+}
+
+.auth-cta {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.primary-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.primary-btn:hover {
+  background: #1e40af;
+}
+
+.secondary-btn {
+  padding: 10px 20px;
+  border: 2px solid #2563eb;
+  border-radius: 6px;
+  background: white;
+  color: #2563eb;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.secondary-btn:hover {
+  background: #eef2ff;
+}
