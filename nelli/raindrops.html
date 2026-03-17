@@ -2,146 +2,226 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Vectle - Caza de Normas v2</title>
+    <title>MathVectle - Desafío de Normas</title>
     <style>
-        body { background: #f0f2f5; color: #1a1a2e; font-family: 'Segoe UI', sans-serif; overflow: hidden; text-align: center; margin: 0; }
-        #ui { margin-top: 20px; background: white; padding: 20px; border-bottom: 4px solid #3f51b5; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        #target-display { font-size: 4em; color: #3f51b5; font-weight: bold; margin: 10px 0; }
-        .instruction { font-size: 1.2em; color: #555; }
+        body { background: #f4f7f9; color: #2c3e50; font-family: 'Segoe UI', sans-serif; margin: 0; overflow: hidden; text-align: center; }
         
-        .gota { 
-            position: absolute; width: 110px; height: 110px; 
-            background: #5c6bc0; border: 2px solid #3949ab; 
-            border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 10;
+        /* PANTALLA DE INICIO Y FINAL */
+        #start-screen, #end-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(26, 26, 46, 0.95); color: white;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 1000; transition: opacity 0.5s;
         }
-        .gota span { transform: rotate(45deg); font-weight: bold; font-size: 1.3em; color: white; }
         
-        #stats { position: fixed; bottom: 0; width: 100%; background: #3f51b5; color: white; padding: 15px; font-size: 1.3em; display: flex; justify-content: center; gap: 50px; }
-        .highlight { color: #ffeb3b; font-weight: bold; }
+        .btn-group { display: flex; gap: 20px; margin-top: 20px; }
+        
+        .game-button {
+            padding: 15px 30px; font-size: 1.2em; border: none; border-radius: 10px; 
+            cursor: pointer; transition: transform 0.2s, background 0.2s; color: white;
+        }
+        #btn-lvl1 { background: #3498db; }
+        #btn-lvl2 { background: #9b59b6; }
+        .game-button:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        .instrucciones { max-width: 500px; line-height: 1.6; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+
+        /* JUEGO */
+        #ui { background: white; padding: 15px; border-bottom: 4px solid #3498db; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        #target-display { font-size: 3.5em; color: #2980b9; font-weight: bold; }
+        .gota { position: absolute; width: 100px; height: 100px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .gota span { transform: rotate(45deg); font-weight: bold; font-size: 1.1em; color: white; text-align: center; }
+        
+        .normal { background: #3498db; }
+        .tiempo-plus { background: #2ecc71; border: 3px solid #27ae60; }
+        .tiempo-minus { background: #2ecc71; border: 3px solid #27ae60; }
+        .reset { background: #9b59b6; border: 3px solid #8e44ad;}
+        
+        #stats-bar { position: fixed; bottom: 0; width: 100%; background: #2c3e50; color: white; padding: 15px; font-size: 1.4em; display: flex; justify-content: space-around; }
+       
+        .acierto { background-color: #2ecc71 !important; transform: scale(1.2) rotate(-45deg); border: 3px solid white; }
+        .error { background-color: #e74c3c !important; transform: scale(0.8) rotate(-45deg); border: 3px solid black; }
     </style>
 </head>
 <body>
 
-    <div id="ui">
-        <div class="instruction">Busca vectores donde $x^2 + y^2$ sea exactamente:</div>
-        <div id="target-display">--</div>
-        <div style="color: #888;">Consigue 3 aciertos para cambiar de número</div>
+    <div id="start-screen">
+        <h1>VECTLE: DESAFÍO DE NORMAS</h1>
+        <div class="instrucciones">
+        <p>🔵 <b>Vectores:</b> Caza 2 correctos para avanzar.<br>
+        🟢 <b>Verde:</b> +5 segundos o -5 segundos.<br>
+        🟣 <b>Morada:</b> Cambia el número objetivo.</p>
+        <p><small>¡Cuidado! Un error te quita 3 segundos.</small></p>
+            <p id="desc-inst">Selecciona tu nivel de dificultad:</p>
+            <p> <b>Nivel 1:</b> Objetivo es (x² + y²).<br>
+                <b>Nivel 2:</b> Objetivo es la Norma .</p>
+        </div>
+        <div class="btn-group">
+            <button id="btn-lvl1" class="game-button">NIVEL 1</button>
+            <button id="btn-lvl2" class="game-button">NIVEL 2</button>
+        </div>
     </div>
 
-    <div id="stats">
-        <span>Aciertos Totales: <span id="total-hits" class="highlight">0</span></span>
-        <span>Errores en este nivel: <span id="level-misses" class="highlight">0</span>/5</span>
+    <div id="end-screen" style="display: none; opacity: 0;">
+        <h1>MISIÓN TERMINADA</h1>
+        <h2 id="final-score">Puntuación: 0</h2>
+        <div class="btn-group">
+            <button onclick="location.reload()" class="game-button" style="background: #34495e;">MENÚ PRINCIPAL</button>
+            <button id="btn-retry" class="game-button" style="background: #27ae60;">REINTENTAR</button>
+        </div>
+    </div>
+
+    <div id="ui">
+        <div id="mode-label">Objetivo:</div>
+        <div id="target-display">--</div>
+    </div>
+
+    <div id="balls"></div>
+
+    <div id="stats-bar">
+        <div>Tiempo: <span id="timer">45</span>s</div>
+        <div>Aciertos: <span id="hits">0</span>/2</div>
+        <div>Total: <span id="total">0</span></div>
     </div>
 
     <script>
-        const targetDisplay = document.getElementById('target-display');
-        const totalHitsDisplay = document.getElementById('total-hits');
-        const levelMissesDisplay = document.getElementById('level-misses');
-
-        let targetSq = 0;
+        let timeLeft = 45;
         let hitsInLevel = 0;
-        let missesInLevel = 0;
-        let totalHits = 0;
-        let easyGotaSpawned = false; // Control para la gota fácil
+        let totalScore = 0;
+        let targetSq = 0;
+        let gameActive = false;
+        let gameMode = 1; // 1: Cuadrados, 2: Normas
+
+        const startScreen = document.getElementById('start-screen');
+        const endScreen = document.getElementById('end-screen');
+        const timerEl = document.getElementById('timer');
+
+        // Botones de Inicio
+        document.getElementById('btn-lvl1').onclick = () => startLevel(1);
+        document.getElementById('btn-lvl2').onclick = () => startLevel(2);
+        document.getElementById('btn-retry').onclick = () => {
+            endScreen.style.display = 'none';
+            timeLeft = 45;
+            totalScore = 0;
+            document.getElementById('total').innerText = "0";
+            startLevel(gameMode);
+        };
+
+        function startLevel(mode) {
+            gameMode = mode;
+            document.getElementById('mode-label').innerText = mode === 1 ? "Objetivo (x² + y²):" : "Objetivo √(x² + y²):";
+            startScreen.style.opacity = '0';
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+                gameActive = true;
+                nextTarget();
+                runGame();
+            }, 500);
+        }
+
+        function runGame() {
+            const countdown = setInterval(() => {
+                if (!gameActive) { clearInterval(countdown); return; }
+                timeLeft--;
+                timerEl.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    gameActive = false;
+                    showResults();
+                }
+            }, 1000);
+
+            const generator = setInterval(() => {
+                if (gameActive) createGota();
+                else clearInterval(generator);
+            }, 1800);
+        }
+
+        function showResults() {
+            document.getElementById('final-score').innerText = "Puntuación Final: " + totalScore;
+            endScreen.style.display = 'flex';
+            setTimeout(() => endScreen.style.opacity = '1', 50);
+        }
 
         function nextTarget() {
-            // Generar un número que tenga al menos una solución inclinada si es posible
-            let x = Math.floor(Math.random() * 7) + 1; 
-            let y = Math.floor(Math.random() * 7) + 1;
+            let x = Math.floor(Math.random() * 8);
+            let y = Math.floor(Math.random() * 8);
             targetSq = (x * x) + (y * y);
+            if (targetSq === 0) return nextTarget();
             
-            targetDisplay.innerText = targetSq;
-            hitsInLevel = 0; 
-            missesInLevel = 0;
-            easyGotaSpawned = false; // Reiniciamos para el nuevo número
-            levelMissesDisplay.innerText = "0";
+            // Lógica de visualización para Nivel 2
+            if (gameMode === 2) {
+                let root = Math.sqrt(targetSq);
+                // Si es raíz exacta (terna), mostrar el número, si no, mostrar la raíz
+                document.getElementById('target-display').innerText = Number.isInteger(root) ? root : `√${targetSq}`;
+            } else {
+                document.getElementById('target-display').innerText = targetSq;
+            }
+            
+            hitsInLevel = 0;
+            document.getElementById('hits').innerText = "0";
         }
 
         function createGota() {
             const gota = document.createElement('div');
             gota.className = 'gota';
-            
-            let vx, vy;
-            const isCorrect = Math.random() > 0.65; // ~35% de probabilidad de ser correcta
+            let type = 'normal', vx, vy, content;
+            const rand = Math.random();
 
-            if (isCorrect) {
-                let solutions = [];
-                for(let x = 0; x <= 10; x++) {
-                    for(let y = 0; y <= 10; y++) {
-                        if(x*x + y*y === targetSq) {
-                            // Lógica de "Gota Fácil": Solo permitir x=0 o y=0 una vez
-                            const isEasy = (x === 0 || y === 0);
-                            if (isEasy) {
-                                if (!easyGotaSpawned) solutions.push([x, y]);
-                            } else {
-                                solutions.push([x, y]);
-                            }
-                        }
-                    }
-                }
-
-                if (solutions.length === 0) { // Failsafe si solo quedaban fáciles y ya salieron
-                    vx = Math.floor(Math.random() * 5) + 1;
-                    vy = Math.floor(Math.random() * 5) + 1;
+            if (rand < 0.12) { type = 'tiempo-plus'; content = "+5s"; }
+            else if (rand < 0.20) { type = 'tiempo-minus'; content = "-5s"; }
+            else if (rand < 0.25) { type = 'reset'; content = "🔃"; }
+            else {
+                const isCorrect = Math.random() > 0.65;
+                if (isCorrect) {
+                    let solutions = [];
+                    for(let x=0; x<=10; x++) for(let y=0; y<=10; y++) if(x*x+y*y===targetSq) solutions.push([x,y]);
+                    let sol = solutions[Math.floor(Math.random()*solutions.length)];
+                    vx = sol[0] * (Math.random()>0.5?1:-1);
+                    vy = sol[1] * (Math.random()>0.5?1:-1);
+                    if(Math.random()>0.5) [vx, vy] = [vy, vx];
                 } else {
-                    let choice = solutions[Math.floor(Math.random() * solutions.length)];
-                    if (choice[0] === 0 || choice[1] === 0) easyGotaSpawned = true;
-                    
-                    vx = choice[0] * (Math.random() > 0.5 ? 1 : -1);
-                    vy = choice[1] * (Math.random() > 0.5 ? 1 : -1);
-                    if(Math.random() > 0.5) [vx, vy] = [vy, vx];
+                    vx = Math.floor(Math.random()*13)-6; vy = Math.floor(Math.random()*13)-6;
+                    if(vx*vx+vy*vy===targetSq) vx++;
                 }
-            } else {
-                // Generar Trampa
-                vx = Math.floor(Math.random() * 11) - 5;
-                vy = Math.floor(Math.random() * 11) - 5;
-                if (vx*vx + vy*vy === targetSq) vx++; 
+                content = `(${vx}, ${vy})`;
             }
 
-            gota.innerHTML = `<span>(${vx}, ${vy})</span>`;
-            gota.style.left = Math.random() * (window.innerWidth - 130) + 'px';
-            gota.style.top = '-130px';
+            gota.classList.add(type);
+            gota.innerHTML = `<span>${content}</span>`;
+            gota.style.left = Math.random() * (window.innerWidth - 120) + 'px';
+            gota.style.top = '-120px';
 
-            let pos = -130;
-            const fallSpeed = 1.0 + Math.random() * 0.7; // Caída lenta y suave
-            
-            let interval = setInterval(() => {
-                pos += fallSpeed;
+            let pos = -120;
+            let speed = 0.9 + Math.random() * 1.3;
+            let move = setInterval(() => {
+                if (!gameActive) { clearInterval(move); gota.remove(); return; }
+                pos += speed;
                 gota.style.top = pos + 'px';
-                if (pos > window.innerHeight) { 
-                    clearInterval(interval); 
-                    gota.remove(); 
-                }
+                if(pos > window.innerHeight) { clearInterval(move); gota.remove(); }
             }, 20);
 
             gota.onclick = () => {
-                if (vx*vx + vy*vy === targetSq) {
-                    totalHits++;
-                    hitsInLevel++;
-                    totalHitsDisplay.innerText = totalHits;
-                    gota.style.background = "#4caf50";
-                    if (hitsInLevel >= 3) {
-                        setTimeout(() => { alert("¡Excelente! Objetivo cumplido."); nextTarget(); }, 100);
+                if (type === 'normal') {
+                    const esCorrecto = (vx * vx + vy * vy === targetSq);
+                    if (esCorrecto) {
+                        gota.classList.add('acierto');
+                        totalScore++; hitsInLevel++;
+                        document.getElementById('total').innerText = totalScore;
+                        document.getElementById('hits').innerText = hitsInLevel;
+                        if (hitsInLevel >= 2) setTimeout(nextTarget, 200);
+                    } else {
+                        gota.classList.add('error');
+                        timeLeft -= 3;
                     }
                 } else {
-                    missesInLevel++;
-                    levelMissesDisplay.innerText = missesInLevel;
-                    gota.style.background = "#f44336";
-                    if (missesInLevel >= 5) {
-                        setTimeout(() => { alert("Demasiados errores. Cambiemos de número."); nextTarget(); }, 100);
-                    }
+                    if (type === 'tiempo-plus') { gota.classList.add('acierto'); timeLeft += 5; }
+                    if (type === 'tiempo-minus') { gota.classList.add('error'); timeLeft -= 5; }
+                    if (type === 'reset') { gota.classList.add('acierto'); nextTarget(); }
                 }
-                setTimeout(() => { clearInterval(interval); gota.remove(); }, 100);
+                setTimeout(() => { clearInterval(move); gota.remove(); }, 250);
             };
-
-            document.body.appendChild(gota);
+            document.getElementById("balls").appendChild(gota);
         }
-
-        nextTarget();
-        setInterval(createGota, 2200); // Aparece una gota cada 2.2 segundos
     </script>
 </body>
 </html>

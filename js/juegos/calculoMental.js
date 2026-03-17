@@ -92,7 +92,7 @@ let numerosPermitidos = [];
 let correct = 0;
 let incorrect = 0;
 
-//por aqui ya es nelli-IA work
+//N:por aqui ya es nelli-IA work
 function irAlMenu() {
     document.getElementById('juego').classList.remove('activa');
     document.getElementById('menu').classList.add('activa');

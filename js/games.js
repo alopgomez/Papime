@@ -1,9 +1,11 @@
 //Importa la funcion BLA from BLABLA
 import { renderCalculoMental } from "./juegos/calculoMental.js";
+import { renderBalloons } from "./juegos/balloons.js";
 
-//Diccionario
+//N:Diccionario de juegos IMORTANTE añadir cada jueego
 const gameMap = {
   calculoMental: renderCalculoMental,
+  balloons: renderBalloons,
   //nave: nombreFuncion=BLA,
 };
 

@@ -13,6 +13,7 @@ export function renderHome(container) {
       <h2>Explora nuestros juegos</h2>
       <div class="game-buttons">
         <button data-game="calculoMental">🧮 Cálculo Mental</button>
+        <button data-game="balloons">🧮 Balloons </button>
       </div>
     </section>
   `;
