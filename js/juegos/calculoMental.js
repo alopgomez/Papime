@@ -1,3 +1,4 @@
+//Como para iniciar, terminar, cancelar y el enrutador es para regresar a la principal
 import { initGame, finishGame, cancelGame } from "./engine.js";
 import { navigate } from "../enrutador.js";
 
@@ -184,6 +185,7 @@ function validar() {
       if (!validos && nivelActual !== 3) {
           feedback.style.color = "var(--danger)";
           feedback.innerText = `Solo puedes usar: ${numerosPermitidos.join(', ')}`;
+          incorrect++;
           return;
       }
   }
@@ -199,13 +201,16 @@ function validar() {
           document.getElementById('btn-check').style.display = 'none';
           document.getElementById('btn-next').style.display = 'block';
           document.getElementById('respuesta-usuario').disabled = true;
+          correct++;
       } else {
           feedback.style.color = "var(--danger)";
           feedback.innerText = `Da ${resultado.toFixed(2)}. ¡Intenta otra vez!`;
+          incorrect++;
       }
   } catch (e) {
       feedback.style.color = "orange";
       feedback.innerText = "Error de sintaxis.";
+      incorrect++;
   }
 }
 
