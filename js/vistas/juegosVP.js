@@ -1,59 +1,95 @@
 export function renderJuegosVP(container) {
   container.innerHTML = `
-    <section class="games-section">
-      <h2>Nuestros Minijuegos</h2>
-      <p class="games-intro">
-        Para acceder a los juegos y guardar tus estadísticas,
-        debes iniciar sesión o crear una cuenta.
-      </p>
+    <div class="slideshow-container">
 
-      <div class="games-grid">
-
-        <div class="game-card">
-          <img src="assets/cal_mental.png" alt="Calculo Mental">
-          <h3>🧮 Cálculo Mental</h3>
-          <p>
-            Resuelve operaciones matemáticas en el menor tiempo posible 
-            y mejora tu velocidad mental.
-          </p>
-        </div>
-
-        <div class="game-card">
-          <img src="assets/nave.png" alt="Nave">
-          <h3>🧠 Nave</h3>
-          <p>
-            Encuentra las parejas correctas antes de que el tiempo se agote 
-            y entrena tu memoria visual.
-          </p>
-        </div>
-
-        <div class="game-card">
-          <img src="assets/memorama.png" alt="Memorama">
-          <h3>📖 Math Match</h3>
-          <p>
-            Encuentra las parejas correctas antes de que el tiempo se agote 
-            y entrena tu memoria visual.
-          </p>
-        </div>
-
-        <div class="game-card">
-          <img src="assets/vectores.png" alt="Vectores">
-          <h3>📖 Vectores</h3>
-          <p>
-            Encuentra la magnitud de los vectores dando click en los globos correctos.
-          </p>
-        </div>
-
+      <div class="slide active">
+        <h2 class="set-title">Cálculo Mental</h2>
+        <img src="assets/cal_mental.png" alt="Imagen 1">
+        <p class="caption">Encuentra la expresión que resulta en el número deseado. La reglas
+        cambia dependiendo de la dificultad que escojas.</p>
       </div>
 
-    </section>
+      <div class="slide">
+        <h2 class="set-title">Memorama</h2>
+        <img src="assets/memorama.png" alt="Imagen 2">
+        <p class="caption">Usa tus conocimientos de lógica y conjuntos para 
+        encontrar los pares correctos.</p>
+      </div>
+
+      <div class="slide">
+        <img src="assets/nave.png" alt="Imagen 3">
+        <p class="caption">Descripción de la imagen 3</p>
+      </div>
+
+      <div class="slide">
+        <img src="assets/vectores.png" alt="Imagen 3">
+        <p class="caption">Descripción de la imagen 3</p>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress"></div>
+      </div>
+
+      <button class="prev">❮</button>
+      <button class="next">❯</button>
+
+    </div>
   `;
 
-  // document.getElementById("go-signin").addEventListener("click", () => {
-  //   alert("Aquí irá la vista de Sign In");
-  // });
+  initSlideshow(container);
+}
 
-  // document.getElementById("go-signup").addEventListener("click", () => {
-  //   alert("Aquí irá la vista de Sign Up");
-  // });
+function initSlideshow(container) {
+
+  const slides = container.querySelectorAll(".slide");
+  const nextBtn = container.querySelector(".next");
+  const prevBtn = container.querySelector(".prev");
+  const progress = container.querySelector(".progress");
+
+  let currentIndex = 0;
+  let interval;
+  const duration = 10000; // 5 segundos
+
+  function startTimer() {
+    progress.style.transition = "none";
+    progress.style.width = "0%";
+
+    // Forzar reflow para reiniciar animación
+    void progress.offsetWidth;
+
+    progress.style.transition = `width ${duration}ms linear`;
+    progress.style.width = "100%";
+  }
+
+  function resetInterval() {
+    clearInterval(interval);
+    interval = setInterval(() => {
+      showSlide(currentIndex + 1);
+    }, duration);
+  }
+
+  function showSlide(index) {
+
+    slides.forEach(slide => slide.classList.remove("active"));
+
+    if (index >= slides.length) currentIndex = 0;
+    else if (index < 0) currentIndex = slides.length - 1;
+    else currentIndex = index;
+
+    slides[currentIndex].classList.add("active");
+
+    startTimer();
+    resetInterval();
+  }
+
+  nextBtn.addEventListener("click", () => {
+    showSlide(currentIndex + 1);
+  });
+
+  prevBtn.addEventListener("click", () => {
+    showSlide(currentIndex - 1);
+  });
+
+  startTimer();
+  resetInterval();
 }

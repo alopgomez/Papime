@@ -1,0 +1,55 @@
+.comojugar {
+  position: relative;
+  text-align: justify;
+  color: #FFCC00; /* dorado UNAM */
+  font-family:  "Quicksand", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  margin-left: 40px;
+  max-width: 850px;
+}
+
+.comojugar h2 {
+  margin-bottom: 25px;
+  font-size: 42px;
+}
+
+.comojugar div {
+  font-size: 24px;
+}
+
+.comojugar-links {
+  list-style: disc;
+  display: block;
+  gap: 30px;
+  /* margin: 0; */
+  /* padding: 10px; */
+}
+
+.comojugar-links li {
+  margin-bottom: 5px;
+}
+
+.comojugar-links a {
+  text-decoration: none;
+  color: white;
+  /* font-size: 18px; */
+  position: relative;
+  transition: 0.3s ease;
+}
+
+/* Hover elegante */
+.comojugar-links a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #FFB81C;
+  left: 0;
+  bottom: -5px;
+  transition: 0.3s;
+}
+
+.comojugar-links a:hover::after {
+  width: 100%;
+}

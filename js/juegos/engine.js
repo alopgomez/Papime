@@ -1,3 +1,6 @@
+import { saveGameSession } from "../servicios/estadisticasJuego.js";
+import { getCurrentUser, setCurrentUser } from "../estado.js";
+
 let currentGame = null;
 let currentLevel = null;
 let startTime = null;
@@ -10,23 +13,38 @@ export function initGame(gameName, level) {
   finished = false;
 }
 
-export function finishGame(correct, incorrect, extraData = {}) {
+export async function finishGame(correct, incorrect) {
   if (!currentGame) return null;
 
   finished = true;
 
   const endTime = Date.now();
   const totalTime = Math.floor((endTime - startTime) / 1000);
+  
+  const currentUser = getCurrentUser();
+  if (!currentUser) return null;
+
+  await saveGameSession(
+    currentUser.identifier,
+    currentGame,
+    currentLevel,
+    correct,
+    incorrect,
+    startTime,
+    endTime,
+    totalTime
+  );
 
   const result = {
-    game: currentGame,
-    level: currentLevel,
+    currentUser: currentUser.identifier,
+    currentGame: currentGame,
+    currentLevel: currentLevel,
     correct: correct,
     incorrect: incorrect,
-    time: totalTime,
-    date: new Date().toISOString(),
-    ...extraData
-  };
+    start: startTime,
+    end: endTime,
+    time: totalTime
+  }
 
   resetGame();
   return result;

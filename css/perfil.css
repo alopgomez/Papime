@@ -1,0 +1,325 @@
+.username {
+  position: relative;
+  font-family: "Quicksand", sans-serif;
+  color: #FFCC00; /* dorado UNAM */
+  font-size: 18px;
+  font-weight: 650;
+  z-index: 2;
+}
+
+.user-menu {
+  position: relative;
+  cursor: pointer;
+  height: 65px;
+  width: 77px;
+  padding: 0px 5px;
+  text-align: center;
+  margin-left: auto;
+
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+  border-left: 1px solid #FFCC00;
+
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  transition: background-color 0.25s ease;
+}
+
+.user-menu::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  transform: scale(0.9);
+}
+
+.user-menu:hover {
+  background-color: #00284f;
+}
+
+.user-menu:hover::before {
+  transform: scale(1);
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 120%;
+
+  background: #003366;
+  border: 3px, solid, #FFB81C;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  /* pointer-events: none; */
+
+  transition: all 0.25s ease;
+}
+
+.dropdown-menu button {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.user-menu.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: #eee;
+  margin: 5px 0;
+}
+
+.cs-link {
+  text-align: left;
+  margin-left: 12px;
+}
+.cs-link a {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  position: relative;
+  transition: 0.3s ease;
+}
+
+/* Hover elegante */
+.cs-link a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #FFB81C;
+  left: 0;
+  bottom: -5px;
+  transition: 0.3s;
+}
+
+.cs-link a:hover::after {
+  width: 100%;
+}
+
+.hidden {
+  display: none;
+}
+
+.user-panel {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  width: 300px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  padding: 20px;
+  z-index: 1000;
+}
+
+.profile {
+  font-family: "Quicksand", sans-serif;
+  color:#FFCC00;
+  text-align: left;
+  padding: 0px 30px;
+}
+
+.profile h2 {
+  font-weight: 600;
+  font-size: 40px;
+}
+
+.profile-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+
+  align-items: center;
+
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.profile-label {
+  text-align: left;
+}
+
+.profile-value {
+  text-align: center;
+  color: #fff3c3;
+}
+
+.profile-change-username {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.edit-username-btn {
+  margin-left: 10px;
+  padding: 6px 14px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #FFCC00;
+  color: #003366;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.edit-username-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.username-toggle {
+  justify-content: center;
+  align-items: center;
+}
+.username-toggle input {
+  /* margin-bottom: 18px; */
+  /* display: flex; */
+  border: 2px solid transparent;
+
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+
+  font-size: 18px;
+  transition: all 0.3s ease;
+
+  width: 60%;
+  height: 40px;
+  /* padding: 0 0px; */
+  border-radius: 8px;
+  box-sizing: border-box;
+
+  margin-top: 10px;
+  text-align: center;
+}
+
+.username-toggle input:focus {
+  outline: none;
+  border-color: #FFCC00;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+}
+
+.username-toggle input:hover {
+  background-color: rgba(255, 255, 255, 0.141);
+}
+
+.username-toggle input::placeholder {
+  color: rgba(255, 255, 255, 0.848);
+  opacity: 0.5;
+}
+
+.username-toggle-changepass {
+  /* display: block; */
+  justify-content: center;
+  position: relative;
+  text-align: center;
+}
+
+.username-toggle-changepass input {
+  /* display: inline-block; */
+  /* display: flex; */
+  border: 2px solid transparent;
+
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+
+  font-size: 18px;
+  transition: all 0.3s ease;
+
+  width: 70%;
+  height: 40px;
+  border-radius: 8px;
+  box-sizing: border-box;
+
+  margin-top: 10px;
+  text-align: center;
+  justify-content: center;
+
+}
+
+.username-toggle-changepass input:focus {
+  outline: none;
+  border-color: #FFCC00;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+}
+
+.username-toggle-changepass input:hover {
+  background-color: rgba(255, 255, 255, 0.141);
+}
+
+.username-toggle-changepass input::placeholder {
+  color: rgba(255, 255, 255, 0.848);
+  opacity: 0.5;
+}
+
+.input-wrapper-changepass {
+  position: relative;
+  /* width: 60%; */
+  margin-bottom: 2px;
+  /* display: flex; */
+  text-align: center;
+  justify-content: center;
+  margin-left: 150px;
+}
+
+.input-wrapper-changepass input {
+  display: flex;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: inherit;
+  border-radius: 6px;
+  text-align: center;
+  justify-content: center;
+}
+
+.toggle-password-changepass {
+  /* width: 60%; */
+  position: absolute;
+  right: 155px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0; 
+  /* display: block; */
+}
+
+/* .toggle-password-changepass svg{
+  width: 20px;
+  height: 20px;
+  display: block;
+} */
+
+.toggle-password-changepass:hover {
+  color: #000;
+}

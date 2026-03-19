@@ -1,0 +1,102 @@
+.form-container {
+  background: rgba(0, 51, 102, 0.85);
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  margin: 40px auto;
+
+  box-shadow: 0 10px 25px rgba(191, 191, 191, 0.4);
+  backdrop-filter: blur(8px);
+
+  color: white;
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #FFCC00; /* dorado UNAM */
+}
+
+.form-container p {
+  text-align: center;
+}
+
+.form-container input {
+  margin-bottom: 18px;
+
+  border: 2px solid transparent;
+
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.form-container input,
+.form-container textarea,
+.form-container button,
+.form-container select {
+  width: 100%;
+  height: 48px;
+
+  padding: 0 14px;
+
+  border-radius: 8px;
+
+  box-sizing: border-box;
+}
+
+.form-container textarea {
+  height: 120px;
+  padding: 12px 14px;
+  resize: none; /* opcional */
+  background-color: rgba(255,255,255,0.1);
+  border: 2px solid transparent;
+  color: white;
+  transition: all 0.3s ease;
+  margin-bottom: 5px;
+}
+
+.form-container input:focus {
+  outline: none;
+  border-color: #FFCC00;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+}
+
+.form-container textarea:focus {
+  outline: none;
+  border-color: #FFCC00;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+}
+
+.form-container input:hover,
+.form-container textarea:hover {
+  background-color: rgba(255, 255, 255, 0.141);
+}
+
+.form-container button {
+  width: 100%;
+  padding: 12px;
+
+  background-color: #FFCC00;
+  color: #003366;
+  font-weight: bold;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.form-container button:hover {
+  background-color: #ffd633;
+  transform: translateY(-2px);
+}
+
+.form-container input::placeholder,
+.form-container textarea::placeholder {
+  color: rgba(255, 255, 255, 0.848);
+}

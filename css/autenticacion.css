@@ -1,0 +1,86 @@
+.auth-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.auth-error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.input-error-auth {
+  border: 2px solid red;
+  box-shadow: 0 0 6px red;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 10px 40px 10px 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: inherit;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 40%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+}
+
+.toggle-password:hover {
+  color: #000;
+}
+
+.solo-links {
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  position: relative;
+  transition: 0.3s ease;
+}
+
+/* Hover elegante */
+.solo-links::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #FFB81C;
+  left: 0;
+  bottom: -5px;
+  transition: 0.3s;
+}
+
+.solo-links:hover::after {
+  width: 100%;
+}
