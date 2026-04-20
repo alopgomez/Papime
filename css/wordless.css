@@ -1,0 +1,118 @@
+:root {
+    --bg_w: #121213;        /* Fondo oscuro Wordle */
+    --correct_w: #538d4e;   /* Verde para aciertos */
+    --present_w: #b59f3b;   /* Amarillo para caracteres presentes */
+    --absent_w: #3a3a3c;    /* Gris para inexistentes */
+    --border_w: #3a3a3c;    /* Borde de celdas vacías */
+    --text_w: #ffffff;
+}
+
+/* body { 
+    font-family: 'Segoe UI', sans-serif; 
+    background: var(--bg_w); 
+    color: var(--text_w); 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    margin: 0; 
+    padding: 20px; 
+} */
+
+
+/* Nuevo contenedor principal para centrar todo */
+.wordless-wrapper {
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg_w);
+    color: var(--text_w);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centrado vertical si el contenedor tiene altura */
+    min-height: 100%;       /* O la altura que desees */
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Asegúrate de que .screen ocupe el ancho correcto dentro del wrapper */
+.screen { 
+    display: none; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    width: 100%; 
+    max-width: 600px; 
+}
+
+.screen { display: none; flex-direction: column; align-items: center; text-align: center; width: 100%; max-width: 600px; }
+.active { display: flex; }
+
+.instructions { 
+    background: #272729; 
+    padding: 15px; 
+    border-radius: 8px; 
+    font-size: 0.9rem; 
+    text-align: left; 
+    margin-bottom: 20px; 
+    border-left: 4px solid var(--correct_w); 
+}
+
+.btn-lvl { 
+    background: #818384; 
+    color: white; 
+    border: none; 
+    padding: 15px; 
+    margin: 5px; 
+    font-size: 1.1rem; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    width: 100%; 
+    transition: 0.2s;
+}
+
+#board_w { 
+    display: grid; 
+    gap: 8px; 
+    margin: 20px 0; 
+    justify-content: center;
+}
+
+.cell {
+    width: 40px; 
+    height: 45px; 
+    border: 2px solid var(--border_w);
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-weight: bold; 
+    font-size: 1.2rem; 
+    transition: background 0.4s, transform 0.2s;
+}
+
+.correct { background: var(--correct_w); border-color: var(--correct_w); }
+.present { background: var(--present_w); border-color: var(--present_w); }
+.absent { background: var(--absent_w); border-color: var(--absent_w); }
+
+input#user-input-w { 
+    padding: 12px; 
+    font-size: 1.2rem; 
+    border-radius: 5px; 
+    border: 1px solid #565758; 
+    background: #272729; 
+    color: white; 
+    width: 100%; 
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.controls { width: 100%; margin-top: 20px; }
+.hidden { display: none; }
+
+#solution-box-w { 
+    margin-top: 15px; 
+    padding: 15px; 
+    background: #1a1a1b; 
+    border: 1px dashed var(--correct_w); 
+    border-radius: 8px; 
+}

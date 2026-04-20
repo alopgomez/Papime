@@ -14,6 +14,8 @@ export function renderHome(container) {
       <div class="game-buttons">
         <button data-game="calculoMental">🧮 Cálculo Mental</button>
         <button data-game="balloons">🧮 Balloons </button>
+        <button data-game="loteria">🧮 Loteria </button>
+        <button data-game="wordless">🧮 Mathless </button>
       </div>
     </section>
   `;
