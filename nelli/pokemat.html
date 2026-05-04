@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Matrix-Mon: Battle System Multi-Level</title>
+    <style>
+        :root {
+            /* Paleta retro GameBoy */
+            --gb-dark: #0f380f;
+            --gb-mid-dark: #306230;
+            --gb-mid-light: #8bac0f;
+            --gb-light: #9bbc0f;
+            --error-red: #d32f2f;
+            --correct-green: #2e7d32;
+        }
+
+        body {
+            background-color: var(--gb-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--gb-dark);
+        }
+
+        #game-containerp {
+            width: 100%;
+            max-width: 700px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen-headerp {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 3px solid var(--gb-dark);
+            padding-bottom: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        #battle-areap { padding: 20px 0; text-align: center; }
+
+        .matrix-displayp {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        /* Estilización de matrices con corchetes CSS */
+        .matrixp {
+            display: grid;
+            position: relative;
+            padding: 5px 15px;
+            gap: 8px;
+        }
+
+        .matrixp::before, .matrixp::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 8px;
+            border: 3px solid var(--gb-dark);
+        }
+        .matrixp::before { left: 0; border-right: none; }
+        .matrixp::after { right: 0; border-left: none; }
+
+        /* Clases dinámicas para el grid */
+        .m2x2 { grid-template-columns: repeat(2, 50px); }
+        .m3x3 { grid-template-columns: repeat(3, 50px); }
+        .m3x1 { grid-template-columns: repeat(1, 50px); }
+        .m1x3 { grid-template-columns: repeat(3, 50px); }
+
+        .matrix-itemp, .matrix-inputp {
+            width: 50px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            font-size: 1.1rem;
+            background: transparent;
+            border: none;
+            color: var(--gb-dark);
+        }
+
+        .matrix-inputp {
+            border-bottom: 2px solid var(--gb-mid-dark);
+            outline: none;
+        }
+
+        .wrong-ansp { color: var(--error-red) !important; font-weight: bold; }
+
+        #ui-areap {
+            padding: 15px;
+            background: var(--gb-mid-light);
+            border-radius: 4px;
+            min-height: 60px;
+        }
+
+        .options-gridp {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .timer-containerp { width: 100%; height: 8px; background: rgba(0,0,0,0.1); margin: 10px 0; }
+        #timer-barp { width: 100%; height: 100%; background: var(--gb-dark); transition: width 0.1s linear; }
+
+        button {
+            background: var(--gb-dark);
+            color: var(--gb-light);
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+            text-transform: uppercase;
+        }
+
+        button:disabled { opacity: 0.6; }
+        .btn-correctp { background: var(--correct-green) !important; color: white; }
+        .btn-wrongp { background: var(--error-red) !important; color: white; }
+        .heartsp { color: #800000; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+<div id="game-containerp">
+    <div class="screen-headerp">
+        <div>CPU <span id="cpu-hpp" class="heartsp">❤❤❤</span></div>
+        <div id="level-indicatorp">MENU</div>
+        <div>TÚ <span id="player-hpp" class="heartsp">❤❤❤</span></div>
+    </div>
+    
+    <div id="battle-areap">
+        <div id="content-boxp">
+            <strong>BIENVENIDO, PROFESOR</strong><br>Seleccione el desafío:<br><br>
+            <button id="btn-lvl1p">NIVEL 1: ARITMÉTICA</button>
+            <button id="btn-lvl2p">NIVEL 2: OP. ELEMENTALES</button>
+        </div>
+
+        <div id="game-playp" style="display:none">
+            <div id="challenge-nump">DESAFÍO: 1/3</div>
+            
+            <div class="matrix-displayp">
+                <span id="scalar-valp"></span>
+                <div id="m1p" class="matrixp"></div>
+                <span id="op-symbolp">+</span>
+                <div id="m2p" class="matrixp"></div>
+                <span id="eq-symbolp" style="font-size:1.5rem">=</span>
+                <div id="m-ansp" class="matrixp"></div>
+            </div>
+            
+            <div class="timer-containerp"><div id="timer-barp"></div></div>
+            
+            <div id="input-zonep">
+                 <button id="attack-btnp">¡ATACAR!</button>
+            </div>
+            <div id="options-zonep" class="options-gridp" style="display:none"></div>
+
+            <button id="next-btnp" style="display:none; margin-top:15px; width:100%">SIGUIENTE</button>
+        </div>
+    </div>
+
+    <div id="ui-areap">
+        <div id="dialogp">Esperando órdenes...</div>
+    </div>
+</div>
+
+<script>
+    /** 
+     * VARIABLES DE ESTADO 
+     * playerHPp / cpuHPp: Vidas de los combatientes.
+     * donep: Contador de desafíos completados en el nivel actual.
+     * datap: Objeto para almacenar la configuración del problema matemático activo.
+     */
+    let playerHPp = 3, cpuHPp = 3, donep = 0, currentLevelp = 1;
+    let timerp, timeTotalp = 35;
+    let datap = {}; 
+
+    // Función auxiliar para acceso rápido al DOM
+    const getp = id => document.getElementById(id);
+
+    /** 
+     * INICIO DE NIVEL
+     * Configura el entorno visual y resetea estadísticas para comenzar un nuevo nivel.
+     */
+    function startLevelp(lvl) {
+        currentLevelp = lvl;
+        playerHPp = 3; cpuHPp = 3; donep = 0;
+        getp('level-indicatorp').innerText = `NIVEL ${lvl}`;
+        getp('content-boxp').style.display = 'none';
+        getp('game-playp').style.display = 'block';
+        updateHeartsp();
+        nextChallengep();
+    }
+
+    /** 
+     * CONTROL DE FLUJO
+     * Gestiona la transición entre un desafío y otro, o finaliza el nivel si se cumplen las condiciones.
+     */
+    function nextChallengep() {
+        if (playerHPp <= 0 || cpuHPp <= 0 || donep >= 3) return endLevelp();
+        
+        donep++;
+        getp('challenge-nump').innerText = `DESAFÍO: ${donep}/3`;
+        getp('next-btnp').style.display = 'none';
+        getp('input-zonep').style.display = 'block'; // Asegura visibilidad del botón de ataque si aplica
+        getp('dialogp').innerText = "¡Calcula rápido!";
+        
+        // Carga la lógica de generación de problemas según el nivel seleccionado
+        if(currentLevelp === 1) setupLevel1p();
+        else setupLevel2p();
+
+        startTimerp();
+    }
+
+    /** 
+     * LÓGICA NIVEL 1: Sumas y Escalares
+     * Genera matrices aleatorias y determina si el reto es una suma o multiplicación por escalar.
+     */
+    function setupLevel1p() {
+        const sizes = ['2x2', '3x1', '1x3'];
+        const size = sizes[Math.floor(Math.random() * sizes.length)];
+        const isScalarp = Math.random() > 0.5;
+        const count = (size === '2x2') ? 4 : 3;
+
+        datap = { type: isScalarp ? 'scalar' : 'sum', size, count, m1: genArrp(count, 10, -10) };
+        
+        getp('input-zonep').style.display = 'block';
+        getp('options-zonep').style.display = 'none';
+        getp('eq-symbolp').style.display = 'inline';
+        getp('m-ansp').style.display = 'grid';
+
+        if(isScalarp) {
+            datap.scalar = Math.floor(Math.random() * 4) + 2;
+            getp('scalar-valp').innerText = datap.scalar + " ·";
+            getp('op-symbolp').style.display = 'none';
+            getp('m2p').style.display = 'none';
+        } else {
+            datap.m2 = genArrp(count, 10, -10);
+            getp('scalar-valp').innerText = '';
+            getp('op-symbolp').style.display = 'inline';
+            getp('m2p').style.display = 'grid';
+            renderMatrixp(getp('m2p'), datap.m2, size);
+        }
+
+        renderMatrixp(getp('m1p'), datap.m1, size);
+        
+        // Generar campos de entrada (inputs) para que el usuario escriba su respuesta
+        getp('m-ansp').className = `matrixp m${size}`;
+        getp('m-ansp').innerHTML = Array.from({length: count}, (_, i) => 
+            `<input type="text" class="matrix-inputp" id="ans${i}p">`).join('');
+    }
+
+    /** 
+     * LÓGICA NIVEL 2: Operaciones Elementales
+     * Presenta una matriz original y una transformada para que el usuario identifique la operación realizada.
+     */
+    function setupLevel2p() {
+        const size = Math.random() > 0.5 ? 2 : 3;
+        const totalElems = size * size;
+        
+        let matrixA = genArrp(totalElems, 5, -5);
+        if(size === 3) {
+            let z = 0;
+            while(z < 3) {
+                let idx = Math.floor(Math.random() * 9);
+                if(matrixA[idx] !== 0) { matrixA[idx] = 0; z++; }
+            }
+        }
+
+        let correctOp = createRandomOpp(size);
+        let matrixB = applyElementaryOp(matrixA, correctOp, size);
+
+        datap = { correctText: correctOp.text, matrixA, matrixB };
+
+        getp('input-zonep').style.display = 'none';
+        getp('options-zonep').style.display = 'grid';
+        getp('scalar-valp').innerText = ' '; 
+        getp('op-symbolp').innerText = '--➔';
+        getp('eq-symbolp').innerText = ' '; 
+        getp('m2p').style.display = 'grid';
+        getp('m-ansp').style.display = 'none';
+
+        renderMatrixp(getp('m1p'), matrixA, size === 2 ? '2x2' : '3x3');
+        renderMatrixp(getp('m2p'), matrixB, size === 2 ? '2x2' : '3x3');
+
+        // Creación de botones de opción múltiple (sin onclicks en el HTML)
+        let options = [correctOp];
+        while(options.length < 4) {
+            let cand = createRandomOpp(size);
+            if(!options.find(o => o.text === cand.text)) options.push(cand);
+        }
+        shuffleArrayp(options);
+
+        getp('options-zonep').innerHTML = '';
+        options.forEach(opt => {
+            let btn = document.createElement('button');
+            btn.innerText = opt.text;
+            // Asignación de evento limpia
+            btn.addEventListener('click', () => checkLevel2p(opt.text === datap.correctText, btn));
+            getp('options-zonep').appendChild(btn);
+        });
+    }
+
+    /** 
+     * UTILIDADES DE CÁLCULO
+     * genArrp: Crea arrays con números aleatorios.
+     * renderMatrixp: Dibuja los números en el grid de la interfaz.
+     * createRandomOpp: Define una operación de renglón (intercambio, escalamiento o suma).
+     * applyElementaryOp: Ejecuta matemáticamente la operación sobre la matriz.
+     */
+    function genArrp(n, max, min) { 
+        return Array.from({length: n}, () => Math.floor(Math.random() * (max - min + 1)) + min); 
+    }
+
+    function renderMatrixp(el, arr, sizeStr) {
+        el.className = `matrixp m${sizeStr}`;
+        el.innerHTML = arr.map(n => `<div class="matrix-itemp">${n}</div>`).join('');
+    }
+
+    function createRandomOpp(size) {
+        const types = ['swap', 'scale', 'add'];
+        const type = types[Math.floor(Math.random() * types.length)];
+        const r1 = Math.floor(Math.random() * size) + 1;
+        let r2 = Math.floor(Math.random() * size) + 1;
+        while(r1 === r2) r2 = Math.floor(Math.random() * size) + 1;
+        
+        let k = Math.floor(Math.random() * 11) - 5; 
+        if(k === 0) k = 1;
+
+        if(type === 'swap') return { type, r1, r2, text: `R${r1} ↔ R${r2}` };
+        if(type === 'scale') return { type, r1, k, text: `${k}R${r1}` };
+        return { type, r1, r2, k, text: `R${r1} + (${k}R${r2})` };
+    }
+
+    function applyElementaryOp(m, op, size) {
+        let res = [...m];
+        let idx = (r, c) => (r-1) * size + (c-1);
+        if(op.type === 'swap') {
+            for(let c=1; c<=size; c++) {
+                let tmp = res[idx(op.r1, c)];
+                res[idx(op.r1, c)] = res[idx(op.r2, c)];
+                res[idx(op.r2, c)] = tmp;
+            }
+        } else if(op.type === 'scale') {
+            for(let c=1; c<=size; c++) res[idx(op.r1, c)] *= op.k;
+        } else {
+            for(let c=1; c<=size; c++) res[idx(op.r1, c)] += op.k * res[idx(op.r2, c)];
+        }
+        return res;
+    }
+
+    /** 
+     * VALIDACIONES 
+     * Comparan la respuesta del usuario con la solución calculada.
+     */
+    function checkLevel1p() {
+        let correct = true;
+        for (let i = 0; i < datap.count; i++) {
+            const inputEl = getp(`ans${i}p`);
+            const val = parseInt(inputEl.value);
+            const target = datap.type === 'sum' ? datap.m1[i] + datap.m2[i] : datap.m1[i] * datap.scalar;
+            
+            if (val !== target) {
+                correct = false;
+                inputEl.value = target;
+                inputEl.classList.add('wrong-ansp');
+            }
+            inputEl.disabled = true;
+        }
+        resolveChallengp(correct, correct ? "¡ATAQUE CORRECTO!" : "¡FALLO EN EL CÁLCULO!");
+    }
+
+    function checkLevel2p(isCorrect, btn) {
+        const allBtns = getp('options-zonep').querySelectorAll('button');
+        allBtns.forEach(b => {
+            b.disabled = true;
+            if(b.innerText === datap.correctText) b.classList.add('btn-correctp');
+        });
+        if(!isCorrect && btn) btn.classList.add('btn-wrongp');
+        resolveChallengp(isCorrect, isCorrect ? "¡OPERACIÓN IDENTIFICADA!" : `ERROR. ERA: ${datap.correctText}`);
+    }
+
+    /**
+     * RESOLUCIÓN DE DESAFÍO
+     * Actualiza HP, detiene el tiempo y muestra el botón para continuar.
+     */
+    function resolveChallengp(win, msg) {
+        clearInterval(timerp);
+        getp('dialogp').innerText = msg;
+        win ? cpuHPp-- : playerHPp--;
+        updateHeartsp();
+        getp('input-zonep').style.display = 'none';
+        getp('next-btnp').style.display = 'block';
+        getp('next-btnp').innerText = (playerHPp <= 0 || cpuHPp <= 0 || donep >= 3) ? "RESULTADO FINAL" : "SIGUIENTE";
+    }
+
+    /** 
+     * SISTEMA DE TIEMPO Y UI 
+     */
+    function startTimerp() {
+        let t = timeTotalp;
+        clearInterval(timerp);
+        timerp = setInterval(() => {
+            t -= 0.1;
+            getp('timer-barp').style.width = (t/timeTotalp*100) + "%";
+            if(t <= 0) {
+                if(currentLevelp === 1) checkLevel1p();
+                else checkLevel2p(false, null);
+            }
+        }, 100);
+    }
+
+    function updateHeartsp() {
+        getp('cpu-hpp').innerText = "❤".repeat(Math.max(0, cpuHPp));
+        getp('player-hpp').innerText = "❤".repeat(Math.max(0, playerHPp));
+    }
+
+    function endLevelp() {
+        const win = cpuHPp < playerHPp;
+        getp('game-playp').style.display = 'none';
+        getp('content-boxp').style.display = 'block';
+        getp('content-boxp').innerHTML = `<h2>${win ? "¡VICTORIA!" : "DERROTA"}</h2>
+            <button id="btn-restartp">VOLVER AL MENÚ</button>`;
+        
+        // Listener dinámico para el botón de reinicio
+        getp('btn-restartp').addEventListener('click', () => location.reload());
+    }
+
+    function shuffleArrayp(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    /** 
+     * EVENT LISTENERS CENTRALIZADOS
+     * Se asignan aquí para evitar onclicks en el HTML y cumplir con los requisitos del servidor.
+     */
+    getp('btn-lvl1p').addEventListener('click', () => startLevelp(1));
+    getp('btn-lvl2p').addEventListener('click', () => startLevelp(2));
+    getp('attack-btnp').addEventListener('click', checkLevel1p);
+    getp('next-btnp').addEventListener('click', nextChallengep);
+
+</script>
+</body>
+</html>

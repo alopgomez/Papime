@@ -4,9 +4,21 @@
 
 /* Pantalla de Inicio */
 #start-screenL {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #1a2a3a; color: white; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; z-index: 100; text-align: center;
+    /* Cambiamos fixed por absolute */
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: #1a2a3a; 
+    color: white; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    /* Bajamos el z-index si es necesario, pero con absolute ya no flotará sobre toda la web */
+    z-index: 10; 
+    text-align: center;
 }
 .menu-box { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); max-width: 90%; }
 
@@ -39,3 +51,17 @@
 .slot.missed { border: 3px dashed var(--error); }
 
 #score { margin-top: 20px; font-size: 1.6rem; font-weight: bold; }
+
+.button-group {
+    display: flex;       /* Activa el modo flexible */
+    flex-direction: row; /* Los alinea horizontalmente (es el default) */
+    justify-content: center; /* Los centra. Usa 'space-between' si quieres que se estiren */
+    gap: 10px;          /* Crea un espacio uniforme entre los botones sin usar margin */
+    flex-wrap: nowrap;   /* Evita que bajen a la siguiente línea aunque no quepan */
+    margin-bottom: 20px;
+}
+
+.btn {
+    white-space: nowrap; /* Evita que el texto dentro del botón se rompa en dos líneas */
+}
+

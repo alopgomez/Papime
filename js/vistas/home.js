@@ -16,6 +16,7 @@ export function renderHome(container) {
         <button data-game="balloons">🧮 Balloons </button>
         <button data-game="loteria">🧮 Loteria </button>
         <button data-game="wordless">🧮 Mathless </button>
+        <button data-game="pokemat">🧮 Pokemat </button>
       </div>
     </section>
   `;

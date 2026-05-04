@@ -6,7 +6,8 @@ export function renderWordless(container) {
   container.innerHTML = `
     <div class="wordless-wrapper">
         <div id="menu-screen" class="screen active">
-            <h1>Math Wordless</h1>
+        
+            <h1>Mathless</h1>
             <div class="instructions">
                 <p><b>Reglas:</b> Resuelve el desafío matemático. Escribe la respuesta usando exactamente el número de casillas blancas.</p>
                 <p>🟩 Correcto | 🟨 Lugar equivocado | ⬜ No existe</p>
@@ -14,7 +15,8 @@ export function renderWordless(container) {
             <button id="btn-lvl-1" class="btn-lvl">Nivel 1: Álgebra Inversa (ax+b=c)</button>
             <button id="btn-lvl-2" class="btn-lvl">Nivel 2: Factorización (TCP y Productos)</button>
             <button id="btn-lvl-3" class="btn-lvl">Nivel 3: Logaritmos & Exp</button>
-        </div>
+            <button id="exitGameW">Salir</button>
+            </div>
 
         <div id="game-screen" class="screen">
             <h2 id="level-title-w">Nivel</h2>
@@ -53,8 +55,15 @@ export function renderWordless(container) {
     document.getElementById('user-input-w').addEventListener('keypress', (eW) => {
         if (eW.key === 'Enter') checkGuessW();
     });
+
+    document.getElementById("exitGameW").
+    addEventListener("click", () => {
+      cancelGame();
+      navigate("home");
+    }); 
 }
 
+// Banco de datos estático para el Nivel 3 (Logaritmos y Exponenciales)
 const nivelesW = {
     3: [
         // Estilo (Base^x)(Base)=Resultado 
@@ -113,16 +122,21 @@ const nivelesW = {
     ]
 };
 
-let currentLevelW = 1;
-let currentExerciseW = null;
-let attemptsW = 0;
-const maxAttemptsW = 3;
 
+// Variables de estado del juego
+let currentLevelW = 1;
+let currentExerciseW = null; // Almacena el objeto {q: pregunta, a: respuesta} actual
+let attemptsW = 0;           // Contador de intentos realizados
+const maxAttemptsW = 3;      // Límite de intentos permitidos
+
+
+// Cambia la visibilidad entre las pantallas del juego (menú vs juego)
 function showScreenW(idW) {
     document.querySelectorAll('.screen').forEach(sW => sW.classList.remove('active'));
     document.getElementById(idW).classList.add('active');
 }
 
+//Genera un ejercicio de Álgebra de primer grado: ax + b = c
 function generarNivel1W() {
     const aW = (Math.floor(Math.random() * 9) + 2) * (Math.random() > 0.5 ? 1 : -1);
     const xW = Math.floor(Math.random() * 41) - 20;
@@ -133,38 +147,44 @@ function generarNivel1W() {
     return { q: preguntaW, a: `x=${xW}`.toLowerCase() };
 }
 
+//Genera un ejercicio de Factorización (TCP o Productos de binomios)
 function generarNivel2W() {
     let aW = 0, bW = 0;
-    while (aW === 0) aW = Math.floor(Math.random() * 19) - 9;
+    while (aW === 0) aW = Math.floor(Math.random() * 19) - 9; // Evitar ceros
     while (bW === 0) bW = Math.floor(Math.random() * 19) - 9;
 
     if (Math.random() > 0.5) {
+        // CASO 1: Trinomio Cuadrado Perfecto (x + a)^2
         const linealW = 2 * aW;
         const indepW = aW * aW;
         const qW = `x² ${linealW >= 0 ? '+' : '-'}${Math.abs(linealW)}x + ${indepW}`;
         return { q: qW, a: `(x${aW > 0 ? '+' : '-'}${Math.abs(aW)})^2`.toLowerCase() };
     } else {
+        // CASO 2: Producto de binomios (x + a)(x + b)
         const sumaW = aW + bW;
         const prodW = aW * bW;
         let medW = sumaW === 0 ? "" : (sumaW === 1 ? "+x" : (sumaW === -1 ? "-x" : `${sumaW > 0 ? '+' : '-'}${Math.abs(sumaW)}x`));
         const qW = `x² ${medW} ${prodW >= 0 ? '+' : '-'}${Math.abs(prodW)}`.replace(/\s+/g, ' ');
         const resW = `(x${aW > 0 ? '+' : '-'}${Math.abs(aW)})(x${bW > 0 ? '+' : '-'}${Math.abs(bW)})`;
-        const altW = `(x${bW > 0 ? '+' : '-'}${Math.abs(bW)})(x${aW > 0 ? '+' : '-'}${Math.abs(aW)})`;
+        const altW = `(x${bW > 0 ? '+' : '-'}${Math.abs(bW)})(x${aW > 0 ? '+' : '-'}${Math.abs(aW)})`; // Respuesta alterna (orden de factores)
         return { q: qW, a: resW.toLowerCase(), alt: altW.toLowerCase() };
     }
 }
 
+//Inicializa un nivel específico
 function startGameW(levelW) {
     currentLevelW = levelW;
     restartLevelW();
 }
 
+//Prepara el estado para un nuevo ejercicio dentro del mismo nivel
 function restartLevelW() {
     attemptsW = 0;
     document.getElementById('active-controls-w').classList.remove('hidden');
     document.getElementById('final-controls-w').classList.add('hidden');
     document.getElementById('user-input-w').value = '';
     
+    // Selección de generador según nivel
     if (currentLevelW === 1) currentExerciseW = generarNivel1W();
     else if (currentLevelW === 2) currentExerciseW = generarNivel2W();
     else currentExerciseW = nivelesW[3][Math.floor(Math.random() * nivelesW[3].length)];
@@ -172,16 +192,18 @@ function restartLevelW() {
     document.getElementById('level-title-w').innerText = `Nivel ${currentLevelW}`;
     document.getElementById('question-text-w').innerText = currentExerciseW.q;
     
-    setupBoardW();
+    setupBoardW(); // cuenta cuántos caracteres tiene la respuesta (por ejemplo, (x+3)^2) tiene 7
     showScreenW('game-screen');
 }
 
+//Crea las celdas vacías en el HTML según la longitud de la respuesta esperada
 function setupBoardW() {
     const boardW = document.getElementById('board_w');
     const colsW = currentExerciseW.a.length;
-    boardW.style.gridTemplateColumns = `repeat(${colsW}, 40px)`;
+    boardW.style.gridTemplateColumns = `repeat(${colsW}, 40px)`; // Ajuste dinámico de columnas
     boardW.innerHTML = '';
     
+    // Crea celdas (intentos máximos x número de caracteres)
     for (let iW = 0; iW < maxAttemptsW * colsW; iW++) {
         const cellW = document.createElement('div');
         cellW.classList.add('cell');
@@ -190,26 +212,30 @@ function setupBoardW() {
     }
 }
 
+//Lógica principal de comparación (Algoritmo estilo Wordle)
 function checkGuessW() {
     const inputW = document.getElementById('user-input-w');
-    const guessW = inputW.value.replace(/\s+/g, '').toLowerCase(); 
+    const guessW = inputW.value.replace(/\s+/g, '').toLowerCase(); // Limpieza de espacios
     const solutionW = currentExerciseW.a.toLowerCase();
     
+    // Validación de longitud
     if (guessW.length !== solutionW.length) {
         alert(`La respuesta requiere exactamente ${solutionW.length} caracteres.`);
         return;
     }
 
     let solMapW = solutionW.split('');
-    let resultsW = new Array(guessW.length).fill('absent');
+    let resultsW = new Array(guessW.length).fill('absent');// Por defecto: no existe
 
+    // Primera pasada: Detectar caracteres correctos en posición correcta (Verde)
     for (let iW = 0; iW < guessW.length; iW++) {
         if (guessW[iW] === solutionW[iW]) {
             resultsW[iW] = 'correct';
             solMapW[iW] = null;
         }
     }
-    
+
+    // Segunda pasada: Detectar caracteres existentes en posición incorrecta (Amarillo) 
     for (let iW = 0; iW < guessW.length; iW++) {
         if (resultsW[iW] !== 'correct' && solMapW.includes(guessW[iW])) {
             resultsW[iW] = 'present';
@@ -217,6 +243,7 @@ function checkGuessW() {
         }
     }
 
+    // Actualización visual de las celdas en la fila actual
     for (let iW = 0; iW < guessW.length; iW++) {
         const cellW = document.getElementById(`cell-${(attemptsW * solutionW.length) + iW}`);
         cellW.innerText = guessW[iW];
@@ -228,6 +255,7 @@ function checkGuessW() {
     attemptsW++;
     inputW.value = '';
 
+    // Verificación de victoria (soporta respuesta alternativa para el Nivel 2)
     const wonW = (guessW === solutionW || (currentExerciseW.alt && guessW === currentExerciseW.alt));
     if (wonW) {
         endGameW(true);
@@ -236,6 +264,7 @@ function checkGuessW() {
     }
 }
 
+//Finaliza la partida y muestra resultados
 function endGameW(wonW) {
     document.getElementById('active-controls-w').classList.add('hidden');
     document.getElementById('final-controls-w').classList.remove('hidden');

@@ -1,0 +1,129 @@
+/* TODO: Movemos las variables dentro del contenedor para no afectar al resto del servidor */
+#game-containerp {
+    --gb-dark: #0f380f;
+    --gb-mid-dark: #306230;
+    --gb-mid-light: #8bac0f;
+    --gb-light: #9bbc0f;
+    --error-red: #d32f2f;
+    --correct-green: #2e7d32;
+
+    /* TODO: Centrado horizontal sin usar body */
+    width: 95%;
+    max-width: 700px;
+    margin: 40px auto; /* El 'auto' en los lados centra el bloque horizontalmente */
+    
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: var(--gb-light);
+    border: 4px solid var(--gb-dark);
+    color: var(--gb-dark);
+}
+
+/* TODO: Scoping de botones. Solo afectamos a los botones DENTRO del juego */
+#game-containerp button {
+    background: var(--gb-dark);
+    color: var(--gb-light);
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: inherit;
+    text-transform: uppercase;
+}
+
+#game-containerp button:disabled { 
+    opacity: 0.6; 
+}
+
+#game-containerp .btn-correctp { 
+    background: var(--correct-green) !important; 
+    color: white; 
+}
+
+#game-containerp .btn-wrongp { 
+    background: var(--error-red) !important; 
+    color: white; 
+}
+
+/* El resto de tus clases se mantienen igual porque ya usan sufijos únicos 'p' */
+.screen-headerp {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--gb-dark);
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+#battle-areap { padding: 20px 0; text-align: center; }
+
+.matrix-displayp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.matrixp {
+    display: grid;
+    position: relative;
+    padding: 5px 15px;
+    gap: 8px;
+}
+
+.matrixp::before, .matrixp::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    border: 3px solid var(--gb-dark);
+}
+.matrixp::before { left: 0; border-right: none; }
+.matrixp::after { right: 0; border-left: none; }
+
+.m2x2 { grid-template-columns: repeat(2, 50px); }
+.m3x3 { grid-template-columns: repeat(3, 50px); }
+.m3x1 { grid-template-columns: repeat(1, 50px); }
+.m1x3 { grid-template-columns: repeat(3, 50px); }
+
+.matrix-itemp, .matrix-inputp {
+    width: 50px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 1.1rem;
+    background: transparent;
+    border: none;
+    color: var(--gb-dark);
+}
+
+.matrix-inputp {
+    border-bottom: 2px solid var(--gb-mid-dark);
+    outline: none;
+}
+
+.wrong-ansp { color: var(--error-red) !important; font-weight: bold; }
+
+#ui-areap {
+    padding: 15px;
+    background: var(--gb-mid-light);
+    border-radius: 4px;
+    min-height: 60px;
+}
+
+.options-gridp {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.timer-containerp { width: 100%; height: 8px; background: rgba(0,0,0,0.1); margin: 10px 0; }
+#timer-barp { width: 100%; height: 100%; background: var(--gb-dark); transition: width 0.1s linear; }
+
+.heartsp { color: #800000; letter-spacing: 2px; }
