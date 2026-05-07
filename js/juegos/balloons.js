@@ -13,11 +13,12 @@ export function renderBalloons(container) {
             <p><small>¡Cuidado! Un error te quita 3 segundos.</small></p>
                 <p id="desc-inst">Selecciona tu nivel de dificultad:</p>
                 <p> <b>Nivel 1:</b> Objetivo es (x² + y²).<br>
-                    <b>Nivel 2:</b> Objetivo es la Norma .</p>
+                    <b>Nivel 2:</b> Objetivo es la Norma.</p>
             </div>
             <div class="btn-group">
                 <button id="btn-lvl1" class="game-button">NIVEL 1</button>
                 <button id="btn-lvl2" class="game-button">NIVEL 2</button>
+                <button id="btn-exit" class="game-button" style="background: #da2828;">SALIR</button>
             </div>
         </div>
 
@@ -25,12 +26,12 @@ export function renderBalloons(container) {
             <h1>MISIÓN TERMINADA</h1>
             <h2 id="final-score">Puntuación: 0</h2>
             <div class="btn-group">
-                <button onclick="location.reload()" class="game-button" style="background: #34495e;">MENÚ PRINCIPAL</button>
+                <button id="escoger-nivel" class="game-button" style="background: #34495e;">ESCOGER NIVEL</button>
                 <button id="btn-retry" class="game-button" style="background: #27ae60;">REINTENTAR</button>
             </div>
         </div>
 
-        <div id="ui">
+        <div id="ui" style="text-align: center">
             <div id="mode-label">Objetivo:</div>
             <div id="target-display">--</div>
         </div>
@@ -41,6 +42,10 @@ export function renderBalloons(container) {
             <div>Tiempo: <span id="timer">45</span>s</div>
             <div>Aciertos: <span id="hits">0</span>/2</div>
             <div>Total: <span id="total">0</span></div>
+            <div>
+                <button id="salir-gotas" class="exit-game">SALIR</button>
+            </div>
+            
         </div>
     `; 
 
@@ -59,7 +64,18 @@ export function renderBalloons(container) {
         startLevel(gameMode);
     };
 
+    document.getElementById('escoger-nivel').onclick = () => {
+        document.getElementById('end-screen').style.display = 'none';
+        timeLeft = 45;
+        totalScore = 0;
+        document.getElementById('total').innerText = "0";
+        document.getElementById('start-screen').style.opacity = '1';
+        document.getElementById('start-screen').style.display = 'flex';
+    };
 
+    document.getElementById('btn-exit').onclick = () => {
+        navigate('home');
+    }
 }
 
 
@@ -112,6 +128,15 @@ function runGame() {
         if (gameActive) createGota();
         else clearInterval(generator);
     }, 1800);
+
+    document.getElementById('salir-gotas').onclick = () => {
+        gameActive = false;
+        timeLeft = 45;
+        totalScore = 0;
+        document.getElementById('total').innerText = "0";
+        document.getElementById('start-screen').style.opacity = '1';
+        document.getElementById('start-screen').style.display = 'flex';
+    }
 }
 
 function showResults() {

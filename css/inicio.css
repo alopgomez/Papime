@@ -252,6 +252,7 @@ nav a:hover {
   /* background-color: #003366; */
   /* overflow: hidden; */
   min-height: 80vh;
+  margin-top: 100px;
   /* background:
     radial-gradient(circle at 50% 20%, #004080, #002244 70%),
     #003366; */
@@ -332,9 +333,9 @@ footer {
   font-size: 17px;
 }
 
-.body-sep {
-  padding-top: 100px;
-}
+/* .body-sep {
+  padding-top: 50px;
+} */
 
 main {
   flex: 1;

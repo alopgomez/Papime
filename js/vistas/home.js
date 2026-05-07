@@ -1,7 +1,6 @@
 import { startGame } from "../games.js"
 import { navigate } from "../enrutador.js"
 import { getCurrentUser } from "../estado.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 export function renderHome(container) {
   if (!container) return;

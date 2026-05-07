@@ -9,7 +9,7 @@
   max-width: 800px;
   /* height: 400px; ALTURA FIJA */
   
-  margin: 0 auto;
+  margin: 120px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;

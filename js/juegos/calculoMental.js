@@ -12,7 +12,7 @@ export function renderCalculoMental(container) {
             <button data-level="nivel1" style="background:var(--success); color:white; width:100%; margin:8px 0;">Nivel 1: Aritmética</button>
             <button data-level="nivel2" style="background:var(--primary); color:white; width:100%; margin:8px 0;">Nivel 2: Potencias</button>
             <button data-level="nivel3" style="background:var(--dark); color:white; width:100%; margin:8px 0;">Nivel Actuario: Cálculo Real</button>
-            <button id="exitGame">Salir</button>
+            <button id="exitGame" style="background:var(--red); color:white; width:100%; margin:8px 0;">Salir</button>
         </div>
 
         <div id="juego" class="pantalla">
@@ -120,10 +120,39 @@ function proximoReto() {
 
   // Configuración de niveles
   if(nivelActual === 0) {
-      valorObjetivo = rand(5, 25);
-      numerosPermitidos = [rand(1,5), rand(1,5), rand(1,10)];
-      guia.innerHTML = "<b>Nivel 0:</b> Solo puedes usar cada número UNA VEZ.";
-      inst.innerText = "Usa cada número una sola vez:";
+    const sym = ['+','-','*'];
+    const elem = [3,5,7,9,11];
+
+    valorObjetivo = 0;
+    while(valorObjetivo <= 0) {
+        numerosPermitidos = [];
+
+        const eind = rand(0,elem.length-1);
+
+        const indrange = createRange(0, elem[eind]-1);
+
+        let op = '';
+        // let opnum = [];
+
+        for(let i of indrange) {
+            if(i%2) {
+                const rsym = sym[rand(0, sym.length-1)];
+                op += rsym;
+            }
+            else {
+                let num = rand(0,10);
+                while(numerosPermitidos.includes(num)) {
+                    num = rand(0,10);
+                }
+                numerosPermitidos.push(num);
+                op += num;
+            }
+        }
+        valorObjetivo = eval(op);
+    }
+
+    guia.innerHTML = "<b>Nivel 0:</b> Solo puedes usar cada número UNA VEZ.";
+    inst.innerText = "Usa cada número una sola vez:";
   } else if(nivelActual === 1) {
       valorObjetivo = rand(10, 50);
       numerosPermitidos = [rand(2,9), rand(2,9), rand(1,5)];
@@ -216,4 +245,20 @@ function validar() {
 
 function rand(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function createRange(start, end, step = 1) {
+  // Calculate the length of the array
+  const length = Math.ceil((end - start) / step) + 1;
+  
+  return Array.from({ length }, (_, index) => start + index*step);
+};
+
+function getSolution0() {
+    const syms = ['+','-','*','/'];
+    
+    const rnum = rand(0,4);
+    rnum.forEach(n)
+
+
 }
