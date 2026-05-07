@@ -1,0 +1,67 @@
+
+:root { --primaryL: #1a2a3a; --accent: #27ae60; --error: #c0392b; --card-bg: #2c3e50; --highlight: #f1c40f; }
+/* body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; flex-direction: column; align-items: center; padding: 20px; margin: 0; } */
+
+/* Pantalla de Inicio */
+#start-screenL {
+    /* Cambiamos fixed por absolute */
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: #1a2a3a; 
+    color: white; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    /* Bajamos el z-index si es necesario, pero con absolute ya no flotará sobre toda la web */
+    z-index: 10; 
+    text-align: center;
+}
+.menu-box { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); max-width: 90%; }
+
+.btn { padding: 12px 20px; margin: 8px; cursor: pointer; border: none; background: white; color: var(--primaryL); border-radius: 8px; font-weight: bold; transition: 0.3s; font-size: 1rem; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+.btn.active { background: var(--accent); color: white; }
+.level-btn { background: var(--highlight); color: #000; }
+
+/* Interfaz de Juego */
+#reset-game { bottom: 15px; display: none; background: var(--accent); color: white; margin: auto;} /* Visible arriba */
+
+#display-card { 
+    width: 350px; height: 140px; background: white; border: 4px solid var(--primaryL);
+    border-radius: 15px; display: flex; flex-direction: column; align-items: center; 
+    justify-content: center; margin-bottom: 20px; font-size: 1.3rem; font-weight: bold; text-align: center; padding: 10px;
+    margin: 10px auto 10px auto;
+}
+#timer-bar { width: 100%; height: 8px; background: #ddd; border-radius: 4px; overflow: hidden; margin-top: 15px; }
+#timer-fill { height: 100%; background: var(--accent); width: 100%; }
+
+#game-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 480px; margin: auto;}
+.slot {
+    width: 150px; height: 110px; background: var(--card-bg); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: white; font-size: 1.4rem; transition: 0.2s; border: 4px solid transparent;
+}
+.slot.locked { background: var(--highlight) !important; color: var(--primaryL) !important; }
+.slot.correct { background: var(--accent) !important; color: white !important; }
+.slot.wrong { background: var(--error) !important; color: white !important; }
+.slot.missed { border: 3px dashed var(--error); }
+
+#score { margin-top: 20px; font-size: 1.6rem; font-weight: bold; }
+
+.button-group {
+    display: flex;       /* Activa el modo flexible */
+    flex-direction: row; /* Los alinea horizontalmente (es el default) */
+    justify-content: center; /* Los centra. Usa 'space-between' si quieres que se estiren */
+    gap: 10px;          /* Crea un espacio uniforme entre los botones sin usar margin */
+    flex-wrap: nowrap;   /* Evita que bajen a la siguiente línea aunque no quepan */
+    margin-bottom: 20px;
+}
+
+.btn {
+    white-space: nowrap; /* Evita que el texto dentro del botón se rompa en dos líneas */
+}
+

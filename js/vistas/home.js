@@ -39,9 +39,9 @@ function renderHomeInvitado(container) {
       <div class="game-buttons">
         <button data-game="calculoMental">🧮 Cálculo Mental</button>
         <button data-game="balloons">🧮 Balloons </button>
-        <button data-game="juego2">🧮 Cálculo Mental</button>
-        <button data-game="juego3">🧮 Cálculo Mental</button>
-        <button data-game="juego4">🧮 Cálculo Mental</button>
+        <button data-game="loteria">🧮 Loteria </button>
+        <button data-game="wordless">🧮 Mathless </button>
+        <button data-game="pokemat">🧮 Pokemat </button>
         <button data-game="calculoMental">🧮 Cálculo Mental</button>
         <button data-game="juego2">🧮 Cálculo Mental</button>
         <button data-game="juego3">🧮 Cálculo Mental</button>
@@ -94,10 +94,10 @@ function renderHomeUsuario(container, user) {
       <h2 style="font-size: 40px">Aquí tienes algunos de tus juegos favoritos</h2>
       <div class="game-buttons">
         <button data-game="calculoMental">🧮 Cálculo Mental</button>
-        <button data-game="juego2">🧮 Cálculo Mental</button>
-        <button data-game="juego3">🧮 Cálculo Mental</button>
-        <button data-game="juego4">🧮 Cálculo Mental</button>
-        <button data-game="calculoMental">🧮 Cálculo Mental</button>
+        <button data-game="balloons">🧮 Balloons </button>
+        <button data-game="loteria">🧮 Loteria </button>
+        <button data-game="wordless">🧮 Mathless </button>
+        <button data-game="pokemat">🧮 Pokemat </button>
         <button data-game="juego2">🧮 Cálculo Mental</button>
         <button data-game="juego3">🧮 Cálculo Mental</button>
         <button data-game="juego4">🧮 Cálculo Mental</button>
