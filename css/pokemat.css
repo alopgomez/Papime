@@ -10,7 +10,7 @@
     /* TODO: Centrado horizontal sin usar body */
     width: 95%;
     max-width: 700px;
-    margin: 40px auto; /* El 'auto' en los lados centra el bloque horizontalmente */
+    margin: 80px auto; /* El 'auto' en los lados centra el bloque horizontalmente */
     
     padding: 20px;
     display: flex;
@@ -54,7 +54,7 @@
     border-bottom: 3px solid var(--gb-dark);
     padding-bottom: 10px;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.0rem;
 }
 
 #battle-areap { padding: 20px 0; text-align: center; }
@@ -64,15 +64,15 @@
     align-items: center;
     justify-content: center;
     gap: 15px;
-    margin: 15px 0;
+    margin: 10px 0;
     flex-wrap: wrap;
 }
 
 .matrixp {
     display: grid;
     position: relative;
-    padding: 5px 15px;
-    gap: 8px;
+    padding: 3px 10px;
+    gap: 20px;
 }
 
 .matrixp::before, .matrixp::after {
@@ -80,21 +80,30 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 8px;
+    width: 10px;
     border: 3px solid var(--gb-dark);
 }
 .matrixp::before { left: 0; border-right: none; }
 .matrixp::after { right: 0; border-left: none; }
 
-.m2x2 { grid-template-columns: repeat(2, 50px); }
-.m3x3 { grid-template-columns: repeat(3, 50px); }
-.m3x1 { grid-template-columns: repeat(1, 50px); }
-.m1x3 { grid-template-columns: repeat(3, 50px); }
+#m-ansp.matrixp {
+    row-gap: 5px;
+    column-gap: 35px;
+}
+
+#m-ansp.matrixp::after {
+    right: -30px;
+}
+
+.m2x2 { grid-template-columns: repeat(2, 40px); }
+.m3x3 { grid-template-columns: repeat(3, 40px); }
+.m3x1 { grid-template-columns: repeat(1, 40px); }
+.m1x3 { grid-template-columns: repeat(3, 40px); }
 
 .matrix-itemp, .matrix-inputp {
-    width: 50px;
-    height: 35px;
-    line-height: 35px;
+    width: 20px;
+    height: 25px;
+    line-height: 25px;
     text-align: center;
     font-size: 1.1rem;
     background: transparent;
@@ -113,9 +122,12 @@
     padding: 15px;
     background: var(--gb-mid-light);
     border-radius: 4px;
-    min-height: 60px;
+    min-height: 30px;
 }
 
+#dialogp {
+    font-size: 0.7em;
+}
 .options-gridp {
     display: grid;
     grid-template-columns: 1fr 1fr;

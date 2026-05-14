@@ -58,6 +58,8 @@ export function renderPokemat(container) {
         <div id="ui-areap">
             <div id="dialogp">Esperando órdenes...</div>
         </div>
+
+        <button id='exitBtnPoke'>Salir</button>
     </div>
     `;
 
@@ -77,6 +79,10 @@ export function renderPokemat(container) {
             getp('next-btnp').addEventListener('click', nextChallengep);
         }
     }, 0);
+
+    document.getElementById('exitBtnPoke').addEventListener('click', () => {
+        navigate('home');
+    });
 }
 
 /** 
@@ -308,7 +314,7 @@ function endLevelp() {
     // TODO: Usar el enrutador para volver sin recargar la página completa.
     getp('btn-restartp').addEventListener('click', () => {
         cancelGame(); // Limpieza del engine.
-        navigate("/"); 
+        renderPokemat(document.getElementById("app"));
     });
 }
 

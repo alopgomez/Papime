@@ -19,16 +19,17 @@
     /* Bajamos el z-index si es necesario, pero con absolute ya no flotará sobre toda la web */
     z-index: 10; 
     text-align: center;
+    font-size: 0.7em;
 }
 .menu-box { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); max-width: 90%; }
 
-.btn { padding: 12px 20px; margin: 8px; cursor: pointer; border: none; background: white; color: var(--primaryL); border-radius: 8px; font-weight: bold; transition: 0.3s; font-size: 1rem; }
+.btn { padding: 8px 16px; margin: 8px; cursor: pointer; border: none; background: white; color: var(--primaryL); border-radius: 8px; font-weight: bold; transition: 0.3s; font-size: 0.8em; }
 .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
 .btn.active { background: var(--accent); color: white; }
 .level-btn { background: var(--highlight); color: #000; }
 
 /* Interfaz de Juego */
-#reset-game { bottom: 15px; display: none; background: var(--accent); color: white; margin: auto;} /* Visible arriba */
+#reset-game { bottom: 15px; display: flex; background: var(--accent); color: white; margin: auto;} /* Visible arriba */
 
 #display-card { 
     width: 350px; height: 140px; background: white; border: 4px solid var(--primaryL);
@@ -50,7 +51,7 @@
 .slot.wrong { background: var(--error) !important; color: white !important; }
 .slot.missed { border: 3px dashed var(--error); }
 
-#score { margin-top: 20px; font-size: 1.6rem; font-weight: bold; }
+#score { margin-top: 20px; font-size: 1.3rem; font-weight: bold; color: white;}
 
 .button-group {
     display: flex;       /* Activa el modo flexible */
@@ -65,3 +66,15 @@
     white-space: nowrap; /* Evita que el texto dentro del botón se rompa en dos líneas */
 }
 
+#game-uiL {
+    display: none; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    width: 100%;
+    margin-top: 90px;
+}
+
+#exitBtnLoteria {
+    display: none;
+}

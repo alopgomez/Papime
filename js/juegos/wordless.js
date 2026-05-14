@@ -16,11 +16,11 @@ export function renderWordless(container) {
             <button id="btn-lvl-2" class="btn-lvl">Nivel 2: Factorización (TCP y Productos)</button>
             <button id="btn-lvl-3" class="btn-lvl">Nivel 3: Logaritmos & Exp</button>
             <button id="exitGameW">Salir</button>
-            </div>
+        </div>
 
         <div id="game-screen" class="screen">
-            <h2 id="level-title-w">Nivel</h2>
-            <h3 id="question-text-w" style="font-size: 1.5rem; color: #aaa;"></h3>
+            <h2 id="level-title-w" style="font-size: 0.9em">Nivel</h2>
+            <h3 id="question-text-w" style="font-size: 1.1rem; color: #aaa;"></h3>
             
             <div id="board_w"></div> 
             

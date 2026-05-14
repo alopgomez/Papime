@@ -43,8 +43,7 @@ export function renderLoteria(container) {
     </div>
 
     <!-- PANTALLA DE JUEGO (Oculta por defecto) -->
-    <div id="game-uiL" style="display: none; flex-direction: column; align-items: center; text-align: center; width: 100%;">
-        <button id="reset-game" class="btn" style="margin-bottom: 15px;">✖ Regresar al Menú</button>
+    <div id="game-uiL">
 
         <div id="display-card">
             <div id="card-text">¡Prepárate!</div>
@@ -53,6 +52,8 @@ export function renderLoteria(container) {
 
         <div id="game-board"></div>
         <div id="score"></div>
+
+        <button id="reset-game" class="btn" style="margin-bottom: 15px;">✖ Regresar al Menú</button>
     </div>
   `;
 

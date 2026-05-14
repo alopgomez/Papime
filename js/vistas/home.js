@@ -42,10 +42,6 @@ function renderHomeInvitado(container) {
         <button data-game="loteria">🧮 Loteria </button>
         <button data-game="wordless">🧮 Mathless </button>
         <button data-game="pokemat">🧮 Pokemat </button>
-        <button data-game="calculoMental">🧮 Cálculo Mental</button>
-        <button data-game="juego2">🧮 Cálculo Mental</button>
-        <button data-game="juego3">🧮 Cálculo Mental</button>
-        <button data-game="juego4">🧮 Cálculo Mental</button>
       </div>
     </section>
   `;
@@ -98,9 +94,6 @@ function renderHomeUsuario(container, user) {
         <button data-game="loteria">🧮 Loteria </button>
         <button data-game="wordless">🧮 Mathless </button>
         <button data-game="pokemat">🧮 Pokemat </button>
-        <button data-game="juego2">🧮 Cálculo Mental</button>
-        <button data-game="juego3">🧮 Cálculo Mental</button>
-        <button data-game="juego4">🧮 Cálculo Mental</button>
       </div>
     </section>
   `;

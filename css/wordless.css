@@ -28,10 +28,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center; /* Centrado vertical si el contenedor tiene altura */
-    min-height: 100%;       /* O la altura que desees */
+    min-height: 100%;      
     width: 100%;
-    margin: 0 auto;
-    padding: 20px;
+    /* margin: 0 auto; */
+    padding: 80px;
     box-sizing: border-box;
 }
 
@@ -42,10 +42,11 @@
     align-items: center; 
     text-align: center; 
     width: 100%; 
-    max-width: 600px; 
+    /* max-width: 600px; */
+    /* height: 100%; */
 }
 
-.screen { display: none; flex-direction: column; align-items: center; text-align: center; width: 100%; max-width: 600px; }
+/* .screen { display: none; flex-direction: column; align-items: center; text-align: center; width: 100%; max-width: 600px; } */
 .active { display: flex; }
 
 .instructions { 
@@ -62,9 +63,9 @@
     background: #818384; 
     color: white; 
     border: none; 
-    padding: 15px; 
+    padding: 10px; 
     margin: 5px; 
-    font-size: 1.1rem; 
+    font-size: 0.8rem; 
     cursor: pointer; 
     border-radius: 5px; 
     width: 100%; 
@@ -74,19 +75,19 @@
 #board_w { 
     display: grid; 
     gap: 8px; 
-    margin: 20px 0; 
+    margin: 0px 0; 
     justify-content: center;
 }
 
 .cell {
-    width: 40px; 
-    height: 45px; 
+    width: 35px; 
+    height: 40px; 
     border: 2px solid var(--border_w);
     display: flex; 
     align-items: center; 
     justify-content: center;
     font-weight: bold; 
-    font-size: 1.2rem; 
+    font-size: 0.9rem; 
     transition: background 0.4s, transform 0.2s;
 }
 
@@ -96,7 +97,7 @@
 
 input#user-input-w { 
     padding: 12px; 
-    font-size: 1.2rem; 
+    font-size: 0.7rem; 
     border-radius: 5px; 
     border: 1px solid #565758; 
     background: #272729; 
@@ -106,12 +107,12 @@ input#user-input-w {
     text-align: center;
 }
 
-.controls { width: 100%; margin-top: 20px; }
+.controls { width: 100%; margin-top: 10px; }
 .hidden { display: none; }
 
 #solution-box-w { 
-    margin-top: 15px; 
-    padding: 15px; 
+    margin-top: 10px; 
+    padding: 3px; 
     background: #1a1a1b; 
     border: 1px dashed var(--correct_w); 
     border-radius: 8px; 
