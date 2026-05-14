@@ -18,7 +18,7 @@ function renderNavbarInvitado(nav) {
   nav.innerHTML = `
     <nav class="navbar">
       <div class="nav-left" style="padding: 0px 10px">
-        <img src="../assets/logo.png" class="logo" style="height: 40px; width: 50px" />
+        <img src="assets/logo.png" class="logo" style="height: 40px; width: 50px" />
         <a href="#" data-route="home"><span class="site-title">Papime</span></a>
       </div>
       <div class="nav-center">
@@ -47,7 +47,7 @@ function renderNavbarUsuario(nav, user) {
   nav.innerHTML = `
     <nav class="navbar">
       <div class="nav-left" style="padding: 0px 10px">
-        <img src="../assets/logo.png" class="logo" style="height: 40px; width: 50px" />
+        <img src="assets/logo.png" class="logo" style="height: 40px; width: 50px" />
         <a href="#" data-route="home"><span class="site-title">Papime</span></a>
       </div>
       <div class="nav-center">
