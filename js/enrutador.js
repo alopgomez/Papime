@@ -5,6 +5,7 @@ import { renderContacto } from "./vistas/contacto.js";
 import { renderIniciarSesion } from "./vistas/iniciarSesion.js";
 import { renderRegistro } from "./vistas/registro.js";
 import { renderVistaPerfil } from "./vistas/perfil.js";
+import { renderVistaStats } from "./vistas/stats.js";
 
 export function navigate(route) {
 
@@ -28,6 +29,9 @@ export function navigate(route) {
       break;
     case "perfil":
       renderVistaPerfil(app);
+      break;
+    case "stats":
+      renderVistaStats(app);
       break;
     default:
       renderHome(app);

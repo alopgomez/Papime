@@ -1,5 +1,5 @@
 import { db } from "../firebase/firebaseConfig.js";
-import { addDoc, updateDoc, doc, collection, serverTimestamp } 
+import { addDoc, updateDoc, doc, collection, serverTimestamp, increment } 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 let currentSessionId = null;
@@ -19,6 +19,11 @@ export async function createSession(userId) {
     logoutAt: null,
     deviceType: getDeviceType(),
     userAgent: navigator.userAgent
+  });
+
+  await updateDoc(doc(db, "users", userId), {
+    nsessions: increment(1),
+    lastLogin: serverTimestamp()
   });
 
   currentSessionId = sessionRef.id;

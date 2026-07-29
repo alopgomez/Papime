@@ -1,0 +1,97 @@
+.stats {
+  font-family: "Quicksand", sans-serif;
+  color:#FFCC00;
+  text-align: left;
+  padding: 0em 0.5em;
+  margin: 5em 0em 1em;
+  height: 100%;
+}
+
+.stats h2 {
+  font-weight: 600;
+  font-size: 40px;
+}
+
+.stats-content{
+  flex: 1;
+  display: grid;
+  grid-template-rows: 10em 1.0em;
+  gap: 1rem;
+  min-height: 0;
+  max-height: fit-content;
+}
+
+.player-summary{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.01rem;
+  margin-top: 0.01rem;
+  margin-bottom: 0.01rem;
+  font-size: 12px;
+  min-height: 0;
+}
+
+.summary-info{
+  display: flex;
+  flex-direction: column;
+  gap: 0.01rem;
+}
+
+.summary-row{
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.summary-chart{
+  position: relative;
+  text-align: center;
+  height: 70%;
+  width: 80%;
+  min-height: 150px;
+}
+
+.summary-chart canvas{
+  width: 100%;
+  height: 100%;
+  /* max-width: 300px; */
+}
+
+#gameStatsContainer{
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.div-stats-selectbox {
+  margin-bottom: 0.1em;
+}
+
+.div-stats-selectbox select{
+  width: 50%;
+  height: 2.1em;
+  padding: 0 1rem;
+  background-color: #002147;
+  color: #FFCC00;
+  border: 2px solid #FFCC00;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.div-stats-selectbox select:hover{
+  background-color: #003366;
+  border-color: #FFD54F;
+}
+
+.div-stats-selectbox select:focus{
+  outline: none;
+  border-color: #FFD54F;
+  box-shadow: 0 0 10px rgba(255,204,0,.4);
+}

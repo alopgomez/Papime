@@ -76,7 +76,12 @@ export function renderCalculoMental(container) {
 //REtonrnas los datos del jueguito
   document.getElementById("terminar-juego").
     addEventListener("click", () => {
-      const res = finishGame(correct, incorrect);
+      const stats = {
+        aciertos: correct,
+        fallos: incorrect,
+      };
+
+      const res = finishGame(stats);
       console.log(res)
 
       correct = 0;

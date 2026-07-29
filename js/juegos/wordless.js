@@ -10,7 +10,7 @@ export function renderWordless(container) {
             <h1>Mathless</h1>
             <div class="instructions">
                 <p><b>Reglas:</b> Resuelve el desafío matemático. Escribe la respuesta usando exactamente el número de casillas blancas.</p>
-                <p>🟩 Correcto | 🟨 Lugar equivocado | ⬜ No existe</p>
+                <p style="text-align: center;">🟩 Correcto | 🟨 Lugar equivocado | ⬜ No existe</p>
             </div>
             <button id="btn-lvl-1" class="btn-lvl">Nivel 1: Álgebra Inversa (ax+b=c)</button>
             <button id="btn-lvl-2" class="btn-lvl">Nivel 2: Factorización (TCP y Productos)</button>
@@ -29,6 +29,8 @@ export function renderWordless(container) {
                 <button id="btn-send-w" class="btn-lvl" style="background: var(--correct_w); margin-top:10px;">Enviar</button>
             </div>
 
+            <p id="errorW" class="hidden"></p>
+
             <div id="final-controls-w" class="controls hidden">
                 <div id="solution-box-w">
                     <p id="status-msg-w"></p>
@@ -42,9 +44,18 @@ export function renderWordless(container) {
   `;
 
     // Botones del Menú
-    document.getElementById('btn-lvl-1').addEventListener('click', () => startGameW(1));
-    document.getElementById('btn-lvl-2').addEventListener('click', () => startGameW(2));
-    document.getElementById('btn-lvl-3').addEventListener('click', () => startGameW(3));
+    document.getElementById('btn-lvl-1').addEventListener('click', () => {
+        initGame("mathless", 1);
+        startGameW(1);
+    });
+    document.getElementById('btn-lvl-2').addEventListener('click', () => {
+        initGame("mathless", 2);
+        startGameW(2);
+    });
+    document.getElementById('btn-lvl-3').addEventListener('click', () => {
+        initGame("mathless", 3);
+        startGameW(3);
+    });
 
     // Botones del Juego
     document.getElementById('btn-send-w').addEventListener('click', checkGuessW);
@@ -127,6 +138,7 @@ const nivelesW = {
 let currentLevelW = 1;
 let currentExerciseW = null; // Almacena el objeto {q: pregunta, a: respuesta} actual
 let attemptsW = 0;           // Contador de intentos realizados
+let failed = 0;              // 0=no se adivino palabra, 1=si se adivino palabra
 const maxAttemptsW = 3;      // Límite de intentos permitidos
 
 
@@ -193,6 +205,7 @@ function restartLevelW() {
     document.getElementById('question-text-w').innerText = currentExerciseW.q;
     
     setupBoardW(); // cuenta cuántos caracteres tiene la respuesta (por ejemplo, (x+3)^2) tiene 7
+    initGame('mathless', currentLevelW);
     showScreenW('game-screen');
 }
 
@@ -217,10 +230,16 @@ function checkGuessW() {
     const inputW = document.getElementById('user-input-w');
     const guessW = inputW.value.replace(/\s+/g, '').toLowerCase(); // Limpieza de espacios
     const solutionW = currentExerciseW.a.toLowerCase();
+
+    const error = document.getElementById('errorW');
+
+    error.classList.add('hidden');
     
     // Validación de longitud
     if (guessW.length !== solutionW.length) {
-        alert(`La respuesta requiere exactamente ${solutionW.length} caracteres.`);
+        error.classList.remove('hidden');
+        error.innerText = `La respuesta requiere exactamente ${solutionW.length} caracteres.`;
+        error.style.color = 'red';
         return;
     }
 
@@ -258,8 +277,10 @@ function checkGuessW() {
     // Verificación de victoria (soporta respuesta alternativa para el Nivel 2)
     const wonW = (guessW === solutionW || (currentExerciseW.alt && guessW === currentExerciseW.alt));
     if (wonW) {
+        failed = 1;
         endGameW(true);
     } else if (attemptsW >= maxAttemptsW) {
+        failed = 0;
         endGameW(false);
     }
 }
@@ -272,6 +293,13 @@ function endGameW(wonW) {
     msgW.innerText = wonW ? "¡Logrado! Excelente razonamiento." : "No te rindas, el álgebra requiere práctica.";
     msgW.style.color = wonW ? "var(--correct_w)" : "#ff4b4b";
     document.getElementById('reveal-ans-w').innerText = currentExerciseW.a;
+
+    const stats = {
+        intentos: attemptsW,
+        exito: failed,
+    };
+
+    const res = finishGame(stats);
 }
 
 // --- GESTIÓN DE EVENTOS (Sustituye a onclick) ---

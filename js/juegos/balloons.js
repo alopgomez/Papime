@@ -54,13 +54,21 @@ export function renderBalloons(container) {
     const timerEl = document.getElementById('timer');
 
     // Botones de Inicio
-    document.getElementById('btn-lvl1').onclick = () => startLevel(1);
-    document.getElementById('btn-lvl2').onclick = () => startLevel(2);
+    document.getElementById('btn-lvl1').onclick = () => {
+        initGame("balloons", 1);
+        startLevel(1);
+    }
+    document.getElementById('btn-lvl2').onclick = () => {
+        initGame("balloons", 2);
+        startLevel(2);
+    }
     document.getElementById('btn-retry').onclick = () => {
         document.getElementById('end-screen').style.display = 'none';
         timeLeft = 45;
         totalScore = 0;
         document.getElementById('total').innerText = "0";
+
+        initGame("balloons", gameMode);
         startLevel(gameMode);
     };
 
@@ -82,6 +90,7 @@ export function renderBalloons(container) {
 let timeLeft = 45;
 let hitsInLevel = 0;
 let totalScore = 0;
+let fails = 0;
 let targetSq = 0;
 let gameActive = false;
 let gameMode = 1; // 1: Cuadrados, 2: Normas
@@ -121,6 +130,12 @@ function runGame() {
         if (timeLeft <= 0) {
             gameActive = false;
             showResults();
+
+            const stats = {
+                aciertos: totalScore,
+                fallos: fails,
+            };
+            const res = finishGame(stats);
         }
     }, 1000);
 
@@ -133,6 +148,7 @@ function runGame() {
         gameActive = false;
         timeLeft = 45;
         totalScore = 0;
+        fails = 0;
         document.getElementById('total').innerText = "0";
         document.getElementById('start-screen').style.opacity = '1';
         document.getElementById('start-screen').style.display = 'flex';
@@ -214,6 +230,7 @@ function createGota() {
                 if (hitsInLevel >= 2) setTimeout(nextTarget, 200);
             } else {
                 gota.classList.add('error');
+                fails++;
                 timeLeft -= 3;
             }
         } else {

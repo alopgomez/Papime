@@ -10,7 +10,7 @@
     /* TODO: Centrado horizontal sin usar body */
     width: 95%;
     max-width: 700px;
-    margin: 80px auto; /* El 'auto' en los lados centra el bloque horizontalmente */
+    margin: 170px auto; /* El 'auto' en los lados centra el bloque horizontalmente */
     
     padding: 20px;
     display: flex;

@@ -141,6 +141,7 @@
   color:#FFCC00;
   text-align: left;
   padding: 0px 30px;
+  margin: 100px auto;
 }
 
 .profile h2 {
@@ -280,16 +281,17 @@
 
 .input-wrapper-changepass {
   position: relative;
+  min-width: 25em;
   /* width: 60%; */
   margin-bottom: 2px;
-  /* display: flex; */
+  display: block;
   text-align: center;
   justify-content: center;
-  margin-left: 150px;
+  /* margin-left: 150px; */
 }
 
 .input-wrapper-changepass input {
-  display: flex;
+  /* display: relative; */
   box-sizing: border-box;
   font-size: 16px;
   font-family: inherit;
@@ -300,14 +302,14 @@
 
 .toggle-password-changepass {
   /* width: 60%; */
-  position: absolute;
-  right: 155px;
-  top: 50%;
-  transform: translateY(-50%);
+  position: relative;
+  right: 2em;
+  /* top: 50%; */
+  transform: translateY(100%);
   cursor: pointer;
   color: #666;
 
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
   line-height: 0; 

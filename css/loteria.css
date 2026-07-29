@@ -19,7 +19,7 @@
     /* Bajamos el z-index si es necesario, pero con absolute ya no flotará sobre toda la web */
     z-index: 10; 
     text-align: center;
-    font-size: 0.7em;
+    font-size: 0.9em;
 }
 .menu-box { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); max-width: 90%; }
 

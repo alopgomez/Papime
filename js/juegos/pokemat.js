@@ -73,8 +73,14 @@ export function renderPokemat(container) {
     setTimeout(() => {
         const btn1 = getp('btn-lvl1p');
         if (btn1) {
-            btn1.addEventListener('click', () => startLevelp(1));
-            getp('btn-lvl2p').addEventListener('click', () => startLevelp(2));
+            btn1.addEventListener('click', () => {
+                initGame("pokemat", 1);
+                startLevelp(1);
+            });
+            getp('btn-lvl2p').addEventListener('click', () => {
+                initGame("pokemat", 2);
+                startLevelp(2);
+            });
             getp('attack-btnp').addEventListener('click', checkLevel1p);
             getp('next-btnp').addEventListener('click', nextChallengep);
         }
@@ -90,7 +96,6 @@ export function renderPokemat(container) {
  */
 function startLevelp(lvl) {
     // TODO: Notificar al engine que el juego ha comenzado.
-    initGame(); 
     currentLevelp = lvl;
     getp('level-indicatorp').innerText = `NIVEL ${lvl}`;
     getp('content-boxp').style.display = 'none';
@@ -301,8 +306,15 @@ function updateHeartsp() {
  */
 function endLevelp() {
     const win = cpuHPp < playerHPp;
+
     // TODO: Notificar al engine los resultados finales.
-    finishGame({ victory: win, score: donep });
+    const stats = {
+        victoria: win, 
+        score: donep,
+        playerhp: playerHPp,
+        cpuhp: cpuHPp,
+    };
+    const res = finishGame(stats);
 
     getp('game-playp').style.display = 'none';
     getp('content-boxp').style.display = 'block';

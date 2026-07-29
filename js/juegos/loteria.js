@@ -71,6 +71,7 @@ export function renderLoteria(container) {
         btn.addEventListener('click', function() {
             document.getElementById('start-screenL').style.display = 'none'; // Ocultar menú
             document.getElementById('game-uiL').style.display = 'flex';      // Mostrar interfaz del juego
+            initGame("loteria", this.dataset.level);
             startGame(this.dataset.level);
         });
     });
@@ -256,5 +257,12 @@ function endGame() {
     });
 
     document.getElementById('score').innerText = `Puntaje: ${aciertos} de 6`;
+
+    const stats = {
+        aciertos: aciertos,
+        fallos: 6-aciertos,
+    };
+
+    const res = finishGame(stats);
 
 }
