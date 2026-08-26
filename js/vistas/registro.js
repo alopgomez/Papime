@@ -3,6 +3,8 @@ import { signup } from "../autenticacion.js";
 import { navigate } from "../enrutador.js";
 import { renderNavbar } from "./navbar.js";
 
+const passlen = 6;
+
 export function renderRegistro(container) {
   container.innerHTML = `
     <div class="form-container">
@@ -87,7 +89,14 @@ export function renderRegistro(container) {
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (regData.password.length < passlen) {
+      errorElement.classList.remove("hidden");
+      errorElement.textContent = `La contraseña debe tener al menos ${passlen} caracteres.`;
+      errorElement.classList.add("alert-warning");
+      return;
+    }
+
+    if (regData.password !== regData.confirmPassword) {
       errorElement.classList.remove("hidden");
       errorElement.textContent = "Las contraseñas no coinciden.";
       errorElement.classList.add("alert-warning");
