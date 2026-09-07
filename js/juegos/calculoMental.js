@@ -226,7 +226,7 @@ function validar() {
   }
 
   // Lógica de Validación de Números
-  if (nivelActual === 0) {
+  if (nivelActual === 0 || nivelActual === 3) {   //Añadi esta linea
       // Copia de los permitidos para ir "tachando"
       let copiaPermitidos = [...numerosPermitidos];
       for (let num of numerosEnInput) {
