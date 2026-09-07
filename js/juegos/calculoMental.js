@@ -168,11 +168,38 @@ function proximoReto() {
       numerosPermitidos = [rand(2,6), rand(2,5), 2];
       guia.innerHTML = "<b>Potencias:</b> Usa **. Ejemplo: 5**2 = 25";
       inst.innerText = "Puedes repetir los números:";
-  } else {
-      valorObjetivo = rand(1, 10);
-      numerosPermitidos = [16, 9, 2, 0.5];
-      guia.innerHTML = "<b>Funciones:</b> Math.sqrt(x), Math.sin(x), Math.PI, Math.exp(x)";
-      inst.innerText = "Nivel Actuario - Uso de funciones:";
+  }else if (nivelActual === 3) { // nivel modificado
+        const grandes = [17,25,41, 50,62, 75, 100];
+        const pequenos = [2, 3, 4, 5, 6, 7, 8, 9];
+
+        // 1. Elegir los números de la partida
+        const numGrande = grandes[rand(0, grandes.length - 1)];
+        const p1 = pequenos[rand(0, pequenos.length - 1)];
+        const p2 = pequenos[rand(0, pequenos.length - 1)];
+        const p3 = pequenos[rand(0, pequenos.length - 1)];
+
+        // 2. Guardarlos para mostrarlos al usuario
+        numerosPermitidos = [numGrande, p1, p2, p3];
+
+        // 3. Crear el objetivo con ingeniería inversa
+        // Parte A: Multiplicamos el grande por un pequeño para acercarnos a los cientos
+        let bloqueA = numGrande * p1; 
+        
+        // Parte B: Hacemos algo con los otros dos pequeños (sumar o multiplicar al azar)
+        let operadorSecundario = rand(0, 1) === 0 ? '+' : '*';
+        let bloqueB = (operadorSecundario === '+') ? (p2 + p3) : (p2 * p3);
+
+        // Parte C: Unimos los bloques (sumando o restando al azar)
+        let operadorPrincipal = rand(0, 1) === 0 ? '+' : '-';
+        if (operadorPrincipal === '+') {
+            valorObjetivo = bloqueA + bloqueB;
+        } else {
+            valorObjetivo = Math.abs(bloqueA - Math.abs(bloqueB)); // abs para evitar negativos feos
+        }
+
+        // 4. Mostrar instrucciones
+        guia.innerHTML = "<b>Countdown:</b> Combina los números para llegar al objetivo exacto. Usa ( )";
+        inst.innerText = "¡Usa cada número solo UNA vez!";
   }
 
   document.getElementById('objetivo').innerText = valorObjetivo;
