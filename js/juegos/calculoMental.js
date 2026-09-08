@@ -190,11 +190,14 @@ function proximoReto() {
         let bloqueB = (operadorSecundario === '+') ? (p2 + p3) : (p2 * p3);
 
         // Parte C: Unimos los bloques (sumando o restando al azar)
-        let operadorPrincipal = rand(0, 1) === 0 ? '+' : '-';
-        if (operadorPrincipal === '+') {
+        let tipoOperacion = rand(0, 2); // 0: suma, 1: resta positiva, 2: resta negativa
+    
+        if (tipoOperacion === 0) {
             valorObjetivo = bloqueA + bloqueB;
+        } else if (tipoOperacion === 1) {
+            valorObjetivo = bloqueA - bloqueB; // Positivo (ej: 300 - 15 = 285)
         } else {
-            valorObjetivo = Math.abs(bloqueA - Math.abs(bloqueB)); // abs para evitar negativos feos
+            valorObjetivo = bloqueB - bloqueA; // Negativo (ej: 15 - 300 = -285)
         }
 
         // 4. Mostrar instrucciones
