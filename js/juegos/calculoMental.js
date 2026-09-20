@@ -32,7 +32,7 @@ export function renderCalculoMental(container) {
                 <button id="omitir" class="btn-omitir">Omitir</button>
                 <button id="terminar-juego" class="btn-menu">Terminar juego</button>
             </div>
-            
+
             <div id="mensaje-feedback" class="mensaje"></div>
         </div>
     </div>
@@ -172,7 +172,7 @@ function proximoReto() {
       guia.innerHTML = "<b>Potencias:</b> Usa **. Ejemplo: 5**2 = 25";
       inst.innerText = "Puedes repetir los números:";
   } else if (nivelActual === 3) { // nivel añaidido
-        const grandes = [17,25,41, 50,62, 75, 100];
+        const grandes = [17,25,29, 35 ,62, 71, 100];
         const pequenos = [2, 3, 4, 5, 6, 7, 8, 9];
 
         // 1. Elegir los números de la partida
@@ -197,11 +197,11 @@ function proximoReto() {
         if (operadorPrincipal === '+') {
             valorObjetivo = bloqueA + bloqueB;
         } else {
-            valorObjetivo = Math.abs(bloqueA - Math.abs(bloqueB)); // abs para evitar negativos feos
+            valorObjetivo =  bloqueB-bloqueA ; // <-- Mínimamente invasivo: quitamos los Math.abs
         }
 
         // 4. Mostrar instrucciones
-        guia.innerHTML = "<b>Countdown:</b> Combina los números para llegar al objetivo exacto. Usa ( )";
+        guia.innerHTML = "Combina los números para llegar al objetivo exacto. Usa ( )";
         inst.innerText = "¡Usa cada número solo UNA vez!";
      }
 
