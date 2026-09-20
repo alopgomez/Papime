@@ -148,9 +148,9 @@ function proximoReto() {
                 op += rsym;
             }
             else {
-                let num = rand(0,10);
+                let num = rand(1,10);
                 while(numerosPermitidos.includes(num)) {
-                    num = rand(0,10);
+                    num = rand(1,10);
                 }
                 numerosPermitidos.push(num);
                 op += num;
