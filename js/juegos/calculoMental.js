@@ -73,6 +73,8 @@ export function renderCalculoMental(container) {
       proximoReto();
   });
 
+
+
 //REtonrnas los datos del jueguito
   document.getElementById("terminar-juego").
     addEventListener("click", () => {
@@ -97,6 +99,7 @@ let numerosPermitidos = [];
 
 let correct = 0;
 let incorrect = 0;
+let racha = 0; // <-- PONLA AQUÍ, en el espacio global
 
 //N:por aqui ya es nelli-IA work
 function irAlMenu() {
@@ -126,7 +129,7 @@ function proximoReto() {
   // Configuración de niveles
   if(nivelActual === 0) {
     const sym = ['+','-','*'];
-    const elem = [3,5,7,9,11];
+    const elem = [2,3,5,7,9];
 
     valorObjetivo = 0;
     while(valorObjetivo <= 0) {
@@ -168,7 +171,7 @@ function proximoReto() {
       numerosPermitidos = [rand(2,6), rand(2,5), 2];
       guia.innerHTML = "<b>Potencias:</b> Usa **. Ejemplo: 5**2 = 25";
       inst.innerText = "Puedes repetir los números:";
-  }else if (nivelActual === 3) { // nivel modificado
+  } else if (nivelActual === 3) { // nivel añaidido
         const grandes = [17,25,41, 50,62, 75, 100];
         const pequenos = [2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -190,20 +193,17 @@ function proximoReto() {
         let bloqueB = (operadorSecundario === '+') ? (p2 + p3) : (p2 * p3);
 
         // Parte C: Unimos los bloques (sumando o restando al azar)
-        let tipoOperacion = rand(0, 2); // 0: suma, 1: resta positiva, 2: resta negativa
-    
-        if (tipoOperacion === 0) {
+        let operadorPrincipal = rand(0, 1) === 0 ? '+' : '-';
+        if (operadorPrincipal === '+') {
             valorObjetivo = bloqueA + bloqueB;
-        } else if (tipoOperacion === 1) {
-            valorObjetivo = bloqueA - bloqueB; // Positivo (ej: 300 - 15 = 285)
         } else {
-            valorObjetivo = bloqueB - bloqueA; // Negativo (ej: 15 - 300 = -285)
+            valorObjetivo = Math.abs(bloqueA - Math.abs(bloqueB)); // abs para evitar negativos feos
         }
 
         // 4. Mostrar instrucciones
         guia.innerHTML = "<b>Countdown:</b> Combina los números para llegar al objetivo exacto. Usa ( )";
         inst.innerText = "¡Usa cada número solo UNA vez!";
-  }
+     }
 
   document.getElementById('objetivo').innerText = valorObjetivo;
   document.getElementById('txt-nivel').innerText = nivelActual === 0 ? "Nivel Cero" : `Nivel ${nivelActual}`;
@@ -218,6 +218,7 @@ function proximoReto() {
   });
 }
 
+
 function validar() {
   const inputStr = document.getElementById('respuesta-usuario').value;
   const feedback = document.getElementById('mensaje-feedback');
@@ -229,24 +230,24 @@ function validar() {
   }
 
   // Lógica de Validación de Números
-  if (nivelActual === 0 || nivelActual === 3) {   //Añadi esta linea
-      // Copia de los permitidos para ir "tachando"
+  if (nivelActual === 0 || nivelActual === 3) {   
       let copiaPermitidos = [...numerosPermitidos];
       for (let num of numerosEnInput) {
           let index = copiaPermitidos.indexOf(parseFloat(num));
           if (index === -1) {
+              racha = 0; // Opcional: reiniciar racha aquí si usan números no permitidos
               feedback.style.color = "var(--danger)";
               feedback.innerText = `Error: El número ${num} no está disponible o ya se usó.`;
               return;
           }
-          copiaPermitidos.splice(index, 1); // Quitarlo para que no se use de nuevo
+          copiaPermitidos.splice(index, 1);
       }
   } else {
-      // Validación de uso ilimitado (pero solo de los permitidos)
       const validos = numerosEnInput.every(num => 
           numerosPermitidos.includes(parseFloat(num)) || (nivelActual === 3 && num.includes('.'))
       );
       if (!validos && nivelActual !== 3) {
+          racha = 0; // Reiniciar racha
           feedback.style.color = "var(--danger)";
           feedback.innerText = `Solo puedes usar: ${numerosPermitidos.join(', ')}`;
           incorrect++;
@@ -254,28 +255,35 @@ function validar() {
       }
   }
 
-  try {
-      // Usamos Math para que funciones como Math.sqrt funcionen directamente
-      const resultado = eval(inputStr.replace(/Math\./g, "Math."));
-      
-      // Usamos un pequeño margen de error para decimales en nivel Actuario
-      if (Math.abs(resultado - valorObjetivo) < 0.1) {
-          feedback.style.color = "var(--success)";
-          feedback.innerText = "¡LOGRADO! Respuesta correcta.";
-          document.getElementById('btn-check').style.display = 'none';
-          document.getElementById('btn-next').style.display = 'block';
-          document.getElementById('respuesta-usuario').disabled = true;
-          correct++;
-      } else {
-          feedback.style.color = "var(--danger)";
-          feedback.innerText = `Da ${resultado.toFixed(2)}. ¡Intenta otra vez!`;
-          incorrect++;
-      }
-  } catch (e) {
-      feedback.style.color = "orange";
-      feedback.innerText = "Error de sintaxis.";
-      incorrect++;
-  }
+    try {
+        // Usamos Math para que funciones como Math.sqrt funcionen directamente
+        const resultado = eval(inputStr.replace(/Math\./g, "Math."));
+        
+        // Usamos un pequeño margen de error para decimales en nivel Actuario
+        if (Math.abs(resultado - valorObjetivo) < 0.1) {
+            feedback.style.color = "var(--success)";
+            feedback.innerText = "¡LOGRADO! Respuesta correcta.";
+            document.getElementById('btn-check').style.display = 'none';
+            document.getElementById('btn-next').style.display = 'block';
+            document.getElementById('respuesta-usuario').disabled = true;
+            correct++;
+            
+            racha++; // <-- NUEVO: Sumar acierto
+            if (racha >= 3) feedback.innerText = `¡LOGRADO! ¡Wow! Vas con todo 🔥 (Racha: ${racha})`;
+
+        } else {
+            racha = 0; // <-- NUEVO: Reiniciar si falla
+            feedback.style.color = "var(--danger)";
+            feedback.innerText = `Da ${resultado.toFixed(2)}. ¡Intenta otra vez!`;
+            incorrect++;
+        }
+     } catch (e) {
+        racha = 0; // <-- NUEVO: Reiniciar si hay error de sintaxis
+        feedback.style.color = "orange";
+        feedback.innerText = "Error de sintaxis.";
+        incorrect++;
+    }
+
 }
 
 function rand(min, max) {
