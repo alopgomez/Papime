@@ -38,6 +38,8 @@ export function renderCalculoMental(container) {
     </div>
   `;
 
+
+
   document.getElementById("exitGame").
     addEventListener("click", () => {
       cancelGame();
@@ -74,8 +76,7 @@ export function renderCalculoMental(container) {
   });
 
 
-
-//REtonrnas los datos del jueguito
+    //REtonrnas los datos del jueguito
   document.getElementById("terminar-juego").
     addEventListener("click", () => {
       const stats = {
@@ -129,7 +130,7 @@ function proximoReto() {
   // Configuración de niveles
   if(nivelActual === 0) {
     const sym = ['+','-','*'];
-    const elem = [2,3,5,7,9];
+    const elem = [3,5,7,9];
 
     valorObjetivo = 0;
     while(valorObjetivo <= 0) {
@@ -156,6 +157,7 @@ function proximoReto() {
                 op += num;
             }
         }
+        console.log(op);
         valorObjetivo = eval(op);
     }
 
@@ -223,6 +225,7 @@ function validar() {
   const inputStr = document.getElementById('respuesta-usuario').value;
   const feedback = document.getElementById('mensaje-feedback');
   const numerosEnInput = inputStr.match(/\d+(\.\d+)?/g) || [];
+
 
   if (numerosEnInput.length === 0) {
       feedback.innerText = "Escribe una operación.";
