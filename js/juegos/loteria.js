@@ -155,10 +155,9 @@ const levels = {
 
 };
 
-
-
 let currentBoard = [], cardsToSing = [], choices = [], currentCardIndex = -1;
 let gameTimeout, canSelectInThisTurn = false, gameTime = 5000;
+let perfectStreak = 0; // <-- NUEVA VARIABLE
 
 
 function startGame(lvl) {
@@ -236,9 +235,7 @@ function nextCard() {
 
 
 function endGame() {
-
     canSelectInThisTurn = false;
-
     document.getElementById('card-text').innerText = "¡Fin de Partida!";
 
     let aciertos = 0;
@@ -246,23 +243,46 @@ function endGame() {
     document.querySelectorAll('.slot').forEach(slot => {
         const choice = choices.find(c => c.selectedSymbol === slot.dataset.symbol);
         const wasCalled = cardsToSing.some(c => c.s === slot.dataset.symbol && currentBoard.some(b => b.s === c.s));
+        
         if (choice) {
-
-            if (choice.selectedSymbol === choice.targetSymbol) { slot.className = 'slot correct'; aciertos++; }
-
-            else slot.className = 'slot wrong';
-
-        } else if (wasCalled) slot.classList.add('missed');
-
+            if (choice.selectedSymbol === choice.targetSymbol) { 
+                slot.className = 'slot correct'; 
+                aciertos++; 
+            } else {
+                slot.className = 'slot wrong';
+            }
+        } else if (wasCalled) {
+            slot.classList.add('missed');
+        }
     });
 
-    document.getElementById('score').innerText = `Puntaje: ${aciertos} de 6`;
+    // --- NUEVA LÓGICA DE RACHA ---
+    if (aciertos === 6) {
+        perfectStreak++; // Sube la racha si es juego perfecto
+    } else {
+        perfectStreak = 0; // Se rompe la racha si comete un error
+    }
+
+    let scoreHTML = `Puntaje: ${aciertos} de 6`;
+
+    // Si lleva 3 o más, le mostramos el mensaje épico
+    if (perfectStreak >= 3) {
+        scoreHTML += `<br><span style="color: #FFD700; font-weight: bold; font-size: 1.2em; text-shadow: 1px 1px 2px #000;">
+            ¡🔥 RACHA IMPARABLE! ${perfectStreak} juegos perfectos seguidos 🔥
+        </span>`;
+    } else if (perfectStreak > 0) {
+        // Opcional: mostrar la racha aunque sea 1 o 2 para que vea su progreso
+        scoreHTML += `<br><span style="color: #4CAF50;">Racha actual: ${perfectStreak}</span>`;
+    }
+
+    // Usamos innerHTML en lugar de innerText
+    document.getElementById('score').innerHTML = scoreHTML;
+    // -----------------------------
 
     const stats = {
         aciertos: aciertos,
-        fallos: 6-aciertos,
+        fallos: 6 - aciertos,
     };
 
     const res = finishGame(stats);
-
 }
