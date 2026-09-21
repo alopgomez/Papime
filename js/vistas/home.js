@@ -38,9 +38,9 @@ function renderHomeInvitado(container) {
       <h2>Explora nuestros juegos</h2>
       <div class="game-buttons">
         <button data-game="calculoMental">🧮 Cálculo Mental</button>
-        <button data-game="balloons">🧮 Balloons </button>
+        <!--<button data-game="balloons">🧮 Balloons </button>-->
         <button data-game="loteria">🧮 Loteria </button>
-        <button data-game="wordless">🧮 Mathless </button>
+        <!--<button data-game="wordless">🧮 Mathless </button>
         <button data-game="pokemat">🧮 Pokemat </button>
       </div>
     </section>
