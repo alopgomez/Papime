@@ -37,7 +37,7 @@ export function renderWordless(container) {
                     <p>Respuesta: <b id="reveal-ans-w" style="font-size: 1.3rem;"></b></p>
                 </div>
                 <button id="btn-restart-w" class="btn-lvl" style="background: var(--correct_w);">Nuevo Desafío</button>
-                <button id="btn-menu-w" class="btn-lvl">Menú Principal</button>
+                <button id="btn-menu-w" class="btn-lvl">Menú Principal</button><p id="racha-display-w" style="font-size: 0.9rem; color: #ffb703; margin: 2px 0;">🔥 Racha: 0</p>
             </div>
         </div>
     </div>
@@ -140,7 +140,7 @@ let currentExerciseW = null; // Almacena el objeto {q: pregunta, a: respuesta} a
 let attemptsW = 0;           // Contador de intentos realizados
 let failed = 0;              // 0=no se adivino palabra, 1=si se adivino palabra
 const maxAttemptsW = 3;      // Límite de intentos permitidos
-
+let rachaw = 0; // Contador de racha de victorias consecutivas
 
 // Cambia la visibilidad entre las pantallas del juego (menú vs juego)
 function showScreenW(idW) {
@@ -287,16 +287,29 @@ function checkGuessW() {
 
 //Finaliza la partida y muestra resultados
 function endGameW(wonW) {
+    // --- Control de racha ---
+    if (wonW) {
+        rachaw++;
+    } else {
+        rachaw = 0;
+    }
+
+    // Si agregaste el elemento visual en el HTML:
+    const rachaTagW = document.getElementById('racha-display-w');
+    if (rachaTagW) rachaTagW.innerText = `🔥 Racha: ${rachaw}`;
+    // ------------------------
+
     document.getElementById('active-controls-w').classList.add('hidden');
     document.getElementById('final-controls-w').classList.remove('hidden');
     const msgW = document.getElementById('status-msg-w');
-    msgW.innerText = wonW ? "¡Logrado! Excelente razonamiento." : "No te rindas, el álgebra requiere práctica.";
+    msgW.innerText = wonW ? `¡Logrado! Racha actual: ${rachaw}` : "No te rindas, el álgebra requiere práctica.";
     msgW.style.color = wonW ? "var(--correct_w)" : "#ff4b4b";
     document.getElementById('reveal-ans-w').innerText = currentExerciseW.a;
 
     const stats = {
         intentos: attemptsW,
         exito: failed,
+        racha: rachaw // Puedes enviarla al motor si lo soporta
     };
 
     const res = finishGame(stats);
